@@ -1,6 +1,8 @@
 const navlist = document.getElementById('home-nav')
-const headings = new Map()
-let currently_visible: Element | null = null
+type SectionInfo = { link: Element, order: number }
+const sections = new Map<Element, SectionInfo>()
+const visible = new Set<SectionInfo>()
+let current: SectionInfo | null = null
 
 function markCurrent(link: Element) {
     link.setAttribute('aria-current', 'true')
@@ -13,20 +15,23 @@ const observer = new IntersectionObserver(
     function(entries) {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-            currently_visible && markNotCurrent(currently_visible)
-            currently_visible = headings.get(entry.target)
-            currently_visible && markCurrent(currently_visible)
+            visible.add(sections.get(entry.target)!)
         } else {
-            const disappeared = headings.get(entry.target)
-            disappeared && markNotCurrent(disappeared)
+            visible.delete(sections.get(entry.target)!)
         }
       }
+      const visible_now = [...visible]
+      visible_now.sort((a, b) => b.order > a.order ? 1 : (b.order < a.order ? -1 : 0))
+      current && markNotCurrent(current.link)
+      current = visible_now[0]
+      current && markCurrent(current.link)
     },
     {
         rootMargin: "0px 24px 0px 0px"
     }
 )
 
+let index = 0
 for (const link of navlist!.querySelectorAll('a[href]')) {
   const url = new URL((link as HTMLAnchorElement).href)
   const slug = url.hash.slice(1)
@@ -35,6 +40,10 @@ for (const link of navlist!.querySelectorAll('a[href]')) {
       console.error(`${slug} is not the id of anything `)
       continue
   }
-  headings.set(target, link)
+  const info = {
+      order: index,
+      link,
+  }
+  sections.set(target, info)
   observer.observe(target)
 }
