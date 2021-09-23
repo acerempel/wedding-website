@@ -1,0 +1,22 @@
+/* This is all you. */
+@layer base {
+    body {
+        font-family: Spectral, 'Libre Baskerville', Georgia, serif;
+    }
+
+    a[aria-current = "true"] {
+        font-weight: bold;
+    }
+}
+
+@layer utilities {
+    .grid-main-and-sides {
+        grid-template-areas: "none-1 header none-2" "left main right";
+        grid-template-columns: 12rem 36rem 12rem;
+    }
+
+    .grid-main { grid-area: main; }
+    .grid-left { grid-area: left; }
+    .grid-right { grid-area: right; }
+    .grid-header { grid-area: header; }
+}

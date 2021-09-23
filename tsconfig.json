@@ -1,0 +1,12 @@
+{
+  "include": [
+    "resources/js/**/*"
+  ],
+  "compilerOptions": {
+    "target": "ES2015",
+    "strict": true,
+    "allowJs": true,
+    "checkJs": true,
+    "esModuleInterop": true
+  }
+}

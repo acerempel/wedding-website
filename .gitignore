@@ -1,0 +1,5 @@
+/vendor/
+/public/
+/storage/
+/.env.example
+.pnpm-debug.log
