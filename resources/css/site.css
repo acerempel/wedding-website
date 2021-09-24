@@ -3,7 +3,7 @@
       @apply underline text-teal-800;
       text-underline-offset: 0.25em;
       text-decoration-thickness: 0.05em;
-      transition: 200ms ease text-decoration-thickness;
+      transition: 300ms ease text-decoration-thickness, 300ms ease font-weight;
     }
 
     a[aria-current = "true"] {

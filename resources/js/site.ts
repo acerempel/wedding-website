@@ -1,6 +1,12 @@
 const navlist = document.getElementById('home-nav')
-type SectionInfo = { link: Element, order: number }
+type SectionInfo = {
+    /** The <a> element. */
+    link: Element,
+    /** The section's ordering in the DOM relative to the other sections. */
+    order: number,
+}
 const sections = new Map<Element, SectionInfo>()
+/** Keep track of which sections are visible. */
 const visible = new Set<SectionInfo>()
 let current: SectionInfo | null = null
 
@@ -21,7 +27,8 @@ const observer = new IntersectionObserver(
         }
       }
       const visible_now = [...visible]
-      visible_now.sort((a, b) => b.order > a.order ? 1 : (b.order < a.order ? -1 : 0))
+      visible_now.sort((a, b) => b.order > a.order ? -1 : (b.order < a.order ? 1 : 0))
+      // console.log("Visible:", visible_now.map(sec => (sec.link as HTMLAnchorElement).href))
       current && markNotCurrent(current.link)
       current = visible_now[0]
       current && markCurrent(current.link)
@@ -34,6 +41,7 @@ const observer = new IntersectionObserver(
 let index = 0
 for (const link of navlist!.querySelectorAll('a[href]')) {
   const url = new URL((link as HTMLAnchorElement).href)
+  // Get the part after the hash symbol
   const slug = url.hash.slice(1)
   const target = document.getElementById(slug)
   if (!target) {
@@ -45,5 +53,6 @@ for (const link of navlist!.querySelectorAll('a[href]')) {
       link,
   }
   sections.set(target, info)
+  index += 1
   observer.observe(target)
 }
