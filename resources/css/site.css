@@ -5,7 +5,11 @@
     }
 
     a[aria-current = "true"] {
-        font-weight: bold;
+        @apply font-bold;
+    }
+
+    p {
+        @apply mt-6 mb-6;
     }
 }
 
