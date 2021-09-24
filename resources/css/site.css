@@ -19,7 +19,16 @@
 @layer utilities {
     .grid-main-and-sides {
         grid-template-areas: "none-1 header none-2" "left main right";
-        grid-template-columns: 12rem 36rem 12rem;
+        grid-template-columns: 10rem minmax(0, 36rem) 10rem;
+    }
+
+    .grid-main-and-one-side {
+      grid-template-areas: "header header" "left main" "right right";
+      grid-template-columns: 8rem minmax(0, 36rem);
+    }
+
+    .grid-single-column {
+      grid-template-areas: "header" "left" "main" "right";
     }
 
     .grid-main { grid-area: main; }
