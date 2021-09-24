@@ -1,7 +1,7 @@
-<main class="mx-auto max-w-3xl sm:max-w-none sm:grid grid-main-and-sides gap-x-8 gap-y-8 justify-center">
+<main class="justify-center max-w-3xl mx-auto sm:max-w-none sm:grid grid-main-and-sides gap-x-8 gap-y-8">
     <h1 class="text-3xl font-light grid-header">{{ title }}</h1>
     <nav class="grid-left">
-        <ul class="space-y-4" id="home-nav">
+        <ul class="space-y-4 sticky top-8" id="home-nav">
             {{ sections }}
             <li><a href="#{{ slug }}">{{ title }}</a></li>
             {{ /sections }}
@@ -10,7 +10,7 @@
     <div class="space-y-8 divide-y divide-teal-200 grid-main">
         {{ sections }}
         <section id="{{ slug }}" aria-labelledby="{{ slug }}-heading" class="pt-8 first:pt-0">
-            <h2 class="text-2xl font-medium mb-2" id="{{ slug }}-heading">{{ title }}</h2>
+            <h2 class="mb-2 text-2xl font-medium" id="{{ slug }}-heading">{{ title }}</h2>
             {{ content }}
         </section>
         {{ /sections }}

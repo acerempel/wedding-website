@@ -1,11 +1,14 @@
-/* This is all you. */
 @layer base {
-    body {
-        font-family: Spectral, 'Libre Baskerville', Georgia, serif;
+    a {
+      @apply underline text-teal-800;
+      text-underline-offset: 0.25em;
+      text-decoration-thickness: 0.05em;
+      transition: 200ms ease text-decoration-thickness;
     }
 
     a[aria-current = "true"] {
         @apply font-bold;
+        text-decoration-thickness: 0.1em;
     }
 
     p {
@@ -23,4 +26,8 @@
     .grid-left { grid-area: left; }
     .grid-right { grid-area: right; }
     .grid-header { grid-area: header; }
+
+    .font-spectral {
+      font-family: Spectral, 'Libre Baskerville', Georgia, serif;
+    }
 }
