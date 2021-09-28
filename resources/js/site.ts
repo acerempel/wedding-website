@@ -1,16 +1,22 @@
 const navlist = document.getElementById('home-nav')
+
 type SectionInfo = {
     /** The <a> element. */
     link: Element,
     /** The section's ordering in the DOM relative to the other sections. */
     order: number,
-    /** This section's heading. */
-    heading?: Element,
 }
+
 const sections = new Map<Element, SectionInfo>()
+
+const enum Visibility {
+  Part,
+  Whole,
+}
+
 /** Keep track of which sections are visible. */
-const visible = new Set<SectionInfo>()
-const headingsVisible = new Map<Element, Boolean>()
+const visible = new Map<SectionInfo, Visibility>()
+
 let current: SectionInfo | null = null
 
 function markCurrent(link: Element) {
@@ -23,44 +29,37 @@ function markNotCurrent(link: Element) {
 function computeCurrentSection() {
     // Copy them into an array so we can sort them
     let visible_now = [...visible]
-    const visible_with_headings = visible_now.filter((sec) => sec.heading && headingsVisible.get(sec.heading))
-    visible_now = visible_with_headings.isEmpty() ? visible_now : visible_with_headings
+    const visible_entirely = visible_now.filter(([_section, visibility]) => visibility === Visibility.Whole)
+    // If any sections are visible in their entirety, the current section is
+    // among those; otherwise it can be any of the partially visible sections.
+    visible_now = visible_entirely.length === 0 ? visible_now : visible_entirely
     // Sort by DOM order, earliest first
-    visible_now.sort((a, b) => b.order > a.order ? -1 : (b.order < a.order ? 1 : 0))
+    visible_now.sort(([a, _v1], [b, _v2]) => b.order > a.order ? -1 : (b.order < a.order ? 1 : 0))
     // console.log("Visible:", visible_now.map(sec => (sec.link as HTMLAnchorElement).href))
     current && markNotCurrent(current.link)
     // The visible section that is first in DOM order is the current section
-    current = visible_now[0]
+    current = visible_now[0][0]
     current && markCurrent(current.link)
 }
-
-const headingObserver = new IntersectionObserver(
-    function(entries) {
-        for (const entry of entries) {
-            if (entry.isIntersecting) {
-                headingsVisible.set(entry.target, true)
-            } else {
-                headingsVisible.set(entry.target, false)
-            }
-        }
-        computeCurrentSection()
-    }
-)
 
 const sectionObserver = new IntersectionObserver(
     function(entries) {
       // Update the set of visible sections
       for (const entry of entries) {
-        if (entry.isIntersecting) {
-            visible.add(sections.get(entry.target)!)
+        const section = sections.get(entry.target)!
+        if (entry.intersectionRatio === 1) {
+            visible.set(section, Visibility.Whole)
+        } else if (entry.isIntersecting) {
+            visible.set(section, Visibility.Part)
         } else {
-            visible.delete(sections.get(entry.target)!)
+            visible.delete(section)
         }
       }
       computeCurrentSection()
     },
     {
-        rootMargin: "0px 24px 0px 0px"
+        rootMargin: "0px 24px 0px 0px",
+        threshold: [0, 1],
     }
 )
 
@@ -76,13 +75,10 @@ for (const link of navlist!.querySelectorAll('a[href]')) {
       console.error(`${slug} is not the id of anything `)
       continue
   }
-  const headingId = target.getAttribute('aria-labelledby')
-  const heading = (headingId && document.getElementById(headingId)) || undefined
-  const info = { order: index, link, heading }
+  const info = { order: index, link, updated: 0 }
   sections.set(target, info)
   index += 1
   sectionObserver.observe(target)
-  heading && headingObserver.observe(heading)
 }
 
 const navShow = document.getElementById('nav-show')!
