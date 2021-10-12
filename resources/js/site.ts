@@ -9,8 +9,11 @@ type SectionInfo = {
 
 const sections = new Map<Element, SectionInfo>()
 
+/** How much of an element is visible? */
 const enum Visibility {
+  /** Partially visible, neither wholly visible nor invisible. */
   Part,
+  /** Entirely visible. */
   Whole,
 }
 
@@ -59,6 +62,8 @@ const sectionObserver = new IntersectionObserver(
     },
     {
         rootMargin: "0px 24px 0px 0px",
+        // Notify us when an element changes from invisible to visible and when
+        // it changes from wholly to partially visible, or vice versa.
         threshold: [0, 1],
     }
 )
