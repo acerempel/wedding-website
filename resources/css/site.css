@@ -1,6 +1,6 @@
 @layer base {
     a {
-      @apply underline text-teal-800;
+      @apply underline interactive;
       text-underline-offset: 0.25em;
       text-decoration-thickness: 0.05em;
       transition: 300ms ease text-decoration-thickness, 300ms ease font-weight;
@@ -38,5 +38,17 @@
 
     .font-spectral {
       font-family: Spectral, 'Libre Baskerville', Georgia, serif;
+    }
+
+    .courgette {
+      @apply px-4 py-2 rounded;
+    }
+
+    .not-courgette {
+      @apply p-0 rounded-none;
+    }
+
+    .interactive {
+      @apply text-teal-800;
     }
 }

@@ -11,11 +11,12 @@ module.exports = {
   },
   important: false,
   theme: {
-    colors: {
-      grey: colours.trueGray,
-      teal: colours.teal,
+    extend: {
+      colors: {
+        grey: colours.trueGray,
+        teal: colours.teal,
+      },
     },
-    extend: {},
   },
   variants: {},
   plugins: [],

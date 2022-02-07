@@ -1,15 +1,12 @@
-<main class="justify-center max-w-3xl mx-auto sm:max-w-none grid grid-single-column sm:grid-main-and-one-side md:grid-main-and-sides gap-x-8 gap-y-8">
+<main class="justify-center max-w-3xl mx-auto sm:max-w-none grid grid-single-column sm:grid-main-and-one-side md:grid-main-and-sides gap-4 sm:gap-8">
     <h1 class="text-3xl font-light grid-header">{{ title }}</h1>
-    <nav class="grid-left">
-        <button
-            type="button" class="block sm:hidden sticky top-4" id="nav-show"
-            aria-controls="home-nav"
-            >Contents</button>
-        <div class="sticky top-8 hidden sm:block" id="home-nav" aria-expanded="false">
+    <nav class="grid-left justify-self-end sm:justify-self-start sticky top-4 sm:top-0 sm:relative">
+      <button type="button" class="block sm:hidden bg-grey-100 courgette interactive drop-shadow-sm" id="nav-show">Contents</button>
+        <div class="absolute sm:sticky top-0 sm:top-6 right-0 flex flex-col text-right items-end hidden sm:block drop-shadow-md sm:drop-shadow-none bg-grey-100 courgette sm:not-courgette sm:bg-transparent" id="home-nav" aria-expanded="false">
             <button
-                type="button" aria-controls="home-nav"
-                id="nav-hide" class="block sm:hidden">Close</button>
-            <ul class="space-y-4">
+                type="button" aria-controls="home-nav" id="nav-hide"
+                class="block sm:hidden interactive mb-2">Close</button>
+            <ul class="space-y-2 sm:space-y-4">
                 {{ sections }}
                 <li><a href="#{{ slug }}">{{ title }}</a></li>
                 {{ /sections }}
@@ -23,6 +20,6 @@
             {{ content }}
         </section>
         {{ /sections }}
-        <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-75.68270623683931%2C45.41041942652012%2C-75.68088233470918%2C45.411630165769346&amp;layer=mapnik&amp;marker=45.41102479938901%2C-75.68179428577423" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=45.41102&amp;mlon=-75.68179#map=19/45.41102/-75.68179">View Larger Map</a></small>
+        <!-- <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-75.68270623683931%2C45.41041942652012%2C-75.68088233470918%2C45.411630165769346&amp;layer=mapnik&amp;marker=45.41102479938901%2C-75.68179428577423" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=45.41102&amp;mlon=-75.68179#map=19/45.41102/-75.68179">View Larger Map</a></small> -->
     </div>
 </main>
