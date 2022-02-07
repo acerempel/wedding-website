@@ -3,3 +3,4 @@
 /storage/
 /.env.example
 .pnpm-debug.log
+.antlers.json
