@@ -1,0 +1,13 @@
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: can_index
+        field:
+          default: true
+          display: 'Allow search engines to index site'
+          type: toggle
+          icon: toggle
+          listable: hidden
+          instructions_position: above
