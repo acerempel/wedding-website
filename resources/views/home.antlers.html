@@ -1,5 +1,8 @@
 <main class="justify-center max-w-3xl mx-auto sm:max-w-none grid grid-single-column sm:grid-main-and-one-side md:grid-main-and-sides gap-4 sm:gap-8">
-    <h1 class="text-3xl font-light grid-header">{{ title }}</h1>
+  <header class="grid-header">
+    <h1 class="text-3xl font-light">{{ title }}</h1>
+    {{ if subtitle }}<p>{{ subtitle }}</p>{{ /if }}
+  </header>
     <nav class="grid-left justify-self-end sm:justify-self-start sticky top-4 sm:top-0 sm:relative">
       <button type="button" class="block sm:hidden bg-grey-100 courgette interactive drop-shadow-sm" id="nav-show">Contents</button>
         <div class="absolute sm:sticky top-0 sm:top-6 right-0 flex flex-col text-right items-end hidden sm:block drop-shadow-md sm:drop-shadow-none bg-grey-100 courgette sm:not-courgette sm:bg-transparent" id="home-nav" aria-expanded="false">
@@ -17,9 +20,28 @@
         {{ sections }}
         <section id="{{ slug }}" aria-labelledby="{{ slug }}-heading" class="pt-8 first:pt-0">
             <h2 class="mb-2 text-2xl font-medium" id="{{ slug }}-heading">{{ title }}</h2>
-            {{ content }}
+            {{ if type == "prose" }}
+              {{ content }}
+            {{ elseif type == "form" }}
+            <form data-netlify="true" method="POST" action="/">
+              {{ if form_description }}<p>{{ form_description }}</p>{{ /if }}
+              {{ fields }}
+                <label>{{ field_name }}
+                  {{ if field_type == "name" }}
+                  <input type="text" autocomplete="name" {{ partial:field_attrs }}>
+                  {{ elseif field_type == "email" }}
+                  <input type="email" autocomplete="email" {{ partial:field_attrs }}>
+                  {{ elseif field_type == "single" }}
+                  <input type="text" {{ partial:field_attrs }}>
+                  {{ elseif field_type == "multi" }}
+                  <texarea {{ partial:field_attrs }}></texarea>
+                  {{ /if }}
+                </label>
+              {{ /fields }}
+              <button type="submit">{{ submit_button_text }}</button>
+            </form>
+            {{ /if }}
         </section>
         {{ /sections }}
-        <!-- <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-75.68270623683931%2C45.41041942652012%2C-75.68088233470918%2C45.411630165769346&amp;layer=mapnik&amp;marker=45.41102479938901%2C-75.68179428577423" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=45.41102&amp;mlon=-75.68179#map=19/45.41102/-75.68179">View Larger Map</a></small> -->
     </div>
 </main>

@@ -11,6 +11,16 @@ sections:
           validate:
             - required
       -
+        handle: subtitle
+        field:
+          input_type: text
+          antlers: false
+          display: Subtitle
+          type: text
+          icon: text
+          listable: hidden
+          instructions_position: above
+      -
         handle: sections
         field:
           collapse: false
@@ -71,6 +81,81 @@ sections:
                     instructions_position: above
                     validate:
                       - required
+            form:
+              display: Form
+              fields:
+                -
+                  handle: title
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Title
+                    type: text
+                    icon: text
+                    listable: hidden
+                    instructions_position: above
+                -
+                  handle: form_description
+                  field:
+                    antlers: false
+                    display: Description
+                    type: textarea
+                    icon: textarea
+                    listable: hidden
+                    instructions_position: above
+                -
+                  handle: fields
+                  field:
+                    fields:
+                      -
+                        handle: field_name
+                        field:
+                          input_type: text
+                          antlers: false
+                          display: Name
+                          type: text
+                          icon: text
+                          listable: hidden
+                          instructions_position: above
+                      -
+                        handle: field_type
+                        field:
+                          options:
+                            name: Name
+                            email: Email
+                            multi: 'Multi-line freeform text'
+                            single: 'Single-line freeform text'
+                          multiple: false
+                          clearable: false
+                          searchable: true
+                          taggable: false
+                          push_tags: false
+                          cast_booleans: false
+                          default: single
+                          display: Type
+                          type: select
+                          icon: select
+                          listable: hidden
+                          instructions_position: above
+                    mode: table
+                    add_row: 'Add Field'
+                    reorderable: true
+                    display: Fields
+                    type: grid
+                    icon: grid
+                    listable: hidden
+                    instructions_position: above
+                -
+                  handle: submit_button_text
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: 'Submit button text'
+                    type: text
+                    icon: text
+                    listable: hidden
+                    instructions_position: above
+                    default: Submit
           display: Sections
           type: replicator
           icon: replicator
@@ -89,7 +174,6 @@ sections:
         handle: slug
         field:
           type: slug
-          required: true
           localizable: true
           validate:
             - required
