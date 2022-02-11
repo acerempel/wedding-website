@@ -41,7 +41,11 @@
     }
 
     .courgette {
-      @apply px-4 py-2 rounded;
+      @apply px-3 py-2 rounded;
+    }
+
+    .aubergine {
+      @apply px-6 py-4 rounded;
     }
 
     .not-courgette {
@@ -50,5 +54,9 @@
 
     .interactive {
       @apply text-teal-800;
+    }
+
+    .button {
+      @apply interactive courgette bg-grey-100;
     }
 }

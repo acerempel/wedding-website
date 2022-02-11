@@ -4,12 +4,16 @@
     {{ if subtitle }}<p>{{ subtitle }}</p>{{ /if }}
   </header>
     <nav class="grid-left justify-self-end sm:justify-self-start sticky top-4 sm:top-0 sm:relative">
-    <button type="button" class="block sm:hidden bg-grey-100 courgette interactive drop-shadow-sm" id="nav-show">Contents</button>
-    <div class="absolute sm:sticky top-0 sm:top-6 right-0 text-right items-end hidden sm:flex flex-col drop-shadow-md sm:drop-shadow-none bg-grey-100 courgette sm:not-courgette sm:bg-transparent" id="home-nav" aria-expanded="false">
+    <button type="button" class="block sm:hidden button drop-shadow-sm" id="nav-show">Contents</button>
+    <div
+      class="
+        absolute sm:sticky top-0 sm:top-6 right-0 text-right items-end
+        hidden sm:flex flex-col drop-shadow-md sm:drop-shadow-none bg-grey-100 aubergine sm:not-courgette sm:bg-transparent
+      " id="home-nav" aria-expanded="false">
         <button
             type="button" aria-controls="home-nav" id="nav-hide"
-            class="block sm:hidden interactive mb-2">close</button>
-        <ul class="space-y-2 sm:space-y-4">
+            class="block sm:hidden interactive mb-4 ml-auto">Close</button>
+        <ul class="space-y-4">
             {{ sections }}
             <li><a href="#{{ slug }}">{{ title }}</a></li>
             {{ /sections }}
@@ -22,24 +26,8 @@
             <h2 class="mb-2 text-2xl font-medium" id="{{ slug }}-heading">{{ title }}</h2>
             {{ if type == "prose" }}
               {{ content }}
-            {{ elseif type == "form" }}
-            <form data-netlify="true" method="POST" action="/">
-              {{ if form_description }}<p>{{ form_description }}</p>{{ /if }}
-              {{ fields }}
-                <label>{{ field_name }}
-                  {{ if field_type == "name" }}
-                  <input type="text" autocomplete="name" {{ partial:field_attrs }}>
-                  {{ elseif field_type == "email" }}
-                  <input type="email" autocomplete="email" {{ partial:field_attrs }}>
-                  {{ elseif field_type == "single" }}
-                  <input type="text" {{ partial:field_attrs }}>
-                  {{ elseif field_type == "multi" }}
-                  <texarea {{ partial:field_attrs }}></texarea>
-                  {{ /if }}
-                </label>
-              {{ /fields }}
-              <button type="submit">{{ submit_button_text }}</button>
-            </form>
+            {{ elseif type == "rsvp_form" }}
+              {{ partial:rsvp_form }}
             {{ /if }}
         </section>
         {{ /sections }}

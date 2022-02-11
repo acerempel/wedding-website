@@ -1,0 +1,5 @@
+<select name="{{ name }}" {{ if !optional }}required{{ /if }} class="courgette">
+  {{ options }}
+  <option{{ if default }} selected{{/if}}>{{ label }}</option>
+  {{ /options }}
+</select>

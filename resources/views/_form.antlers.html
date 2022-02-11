@@ -1,0 +1,11 @@
+<form data-netlify="true" method="POST" action="/" name="{{ name }}">
+  {{ if form_description }}
+  <p id="form-{{ name }}-description">{{ form_description }}</p>
+  {{ /if }}
+  <div class="flex flex-row flex-wrap">
+    {{ slot }}
+  </div>
+  <button
+    type="submit"
+    class="button">{{ submit_button_text ?? 'Submit' }}</button>
+</form>

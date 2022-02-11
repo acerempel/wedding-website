@@ -1,0 +1,6 @@
+{{ partial:form name="RSVP" form_description="You may RSVP by filling out this convenient electronic form! RSVPing by email or post is also great." }}
+  {{ partial:field kind="name" name="Name" width="half" }}
+  {{ partial:field kind="email" name="Email" width="half" }}
+  {{ partial:field kind="select" :options="rsvp_options" name="Response" orient="row" }}
+  {{ partial:field kind="textarea" name="Message" optional="true" width="full" }}
+{{ /partial:form }}

@@ -25,6 +25,55 @@ sections:
         field:
           collapse: false
           sets:
+            rsvp_form:
+              display: 'RSVP form'
+              fields:
+                -
+                  handle: title
+                  field:
+                    input_type: text
+                    antlers: false
+                    display: Title
+                    type: text
+                    icon: text
+                    listable: hidden
+                    instructions_position: above
+                -
+                  handle: rsvp_options
+                  field:
+                    type: grid
+                    display: 'Response options'
+                    fields:
+                      -
+                        handle: label
+                        field:
+                          input_type: text
+                          antlers: false
+                          display: Label
+                          type: text
+                          icon: text
+                          width: 50
+                          listable: hidden
+                          instructions_position: above
+                      -
+                        handle: default
+                        field:
+                          default: false
+                          display: 'Default?'
+                          type: toggle
+                          icon: toggle
+                          width: 50
+                          listable: hidden
+                          instructions_position: above
+                -
+                  handle: slug
+                  field:
+                    generate: true
+                    display: Slug
+                    type: slug
+                    icon: slug
+                    listable: hidden
+                    instructions_position: above
             prose:
               display: Prose
               fields:
@@ -117,24 +166,86 @@ sections:
                           icon: text
                           listable: hidden
                           instructions_position: above
+                          width: 50
                       -
-                        handle: field_type
+                        handle: required
                         field:
-                          options:
-                            name: Name
-                            email: Email
-                            multi: 'Multi-line freeform text'
-                            single: 'Single-line freeform text'
-                          multiple: false
-                          clearable: false
-                          searchable: true
-                          taggable: false
-                          push_tags: false
-                          cast_booleans: false
-                          default: single
-                          display: Type
-                          type: select
-                          icon: select
+                          default: true
+                          display: 'Required?'
+                          type: toggle
+                          icon: toggle
+                          width: 50
+                          listable: hidden
+                          instructions_position: above
+                      -
+                        handle: field
+                        field:
+                          collapse: false
+                          max_sets: 1
+                          sets:
+                            text_single_line:
+                              display: 'Text field (single-line)'
+                              fields:
+                                -
+                                  handle: field_type
+                                  field:
+                                    options:
+                                      text: Plain
+                                      email: Email
+                                      name: Name
+                                    multiple: false
+                                    clearable: false
+                                    searchable: true
+                                    taggable: false
+                                    push_tags: false
+                                    cast_booleans: false
+                                    default: text
+                                    display: Type
+                                    type: select
+                                    icon: select
+                                    listable: hidden
+                                    instructions_position: above
+                            text_multi_line:
+                              display: 'Text field (multi-line)'
+                              fields: {  }
+                            dropdown:
+                              display: Dropdown
+                              fields:
+                                -
+                                  handle: options
+                                  field:
+                                    fields:
+                                      -
+                                        handle: label
+                                        field:
+                                          input_type: text
+                                          antlers: false
+                                          display: Label
+                                          type: text
+                                          icon: text
+                                          width: 50
+                                          listable: hidden
+                                          instructions_position: above
+                                      -
+                                        handle: default
+                                        field:
+                                          default: false
+                                          display: 'Default?'
+                                          type: toggle
+                                          icon: toggle
+                                          width: 50
+                                          listable: hidden
+                                          instructions_position: above
+                                    mode: table
+                                    reorderable: true
+                                    display: Options
+                                    type: grid
+                                    icon: grid
+                                    listable: hidden
+                                    instructions_position: above
+                          display: Field
+                          type: replicator
+                          icon: replicator
                           listable: hidden
                           instructions_position: above
                     mode: table

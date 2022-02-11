@@ -62,18 +62,6 @@ sections:
     type: prose
     enabled: true
   -
-    title: Contact
-    fields:
-      -
-        field_name: Name
-        field_type: name
-      -
-        field_name: Email
-        field_type: email
-    submit_button_text: Submit
-    type: form
-    enabled: true
-  -
     title: 'COVID stuff'
     content:
       -
@@ -97,8 +85,20 @@ sections:
     slug: parking
     type: prose
     enabled: true
+  -
+    type: rsvp_form
+    title: RSVP
+    enabled: true
+    rsvp_options:
+      - default: false
+        label: 'Regrettably not'
+      - default: true
+        label: 'Happily yes!'
+      - default: false
+        label: Maybe
+    slug: rsvp
 updated_by: e48f6027-09ad-467d-861a-02b67df6db3e
-updated_at: 1644378996
+updated_at: 1644593089
 subtitle: 'Saturday, September 3rd, 2022'
 ---
 Welcome to your new Statamic website.
