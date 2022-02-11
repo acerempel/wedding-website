@@ -1,1 +1,3 @@
 title: 'Search engine settings'
+data:
+  cannot_index: true

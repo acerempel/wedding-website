@@ -3,10 +3,10 @@ sections:
     display: Main
     fields:
       -
-        handle: can_index
+        handle: cannot_index
         field:
           default: true
-          display: 'Allow search engines to index site'
+          display: 'Disallow search engines from indexing site'
           type: toggle
           icon: toggle
           listable: hidden
