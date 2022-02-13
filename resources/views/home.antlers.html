@@ -31,6 +31,8 @@
             <h2 class="mb-2 text-2xl font-medium" id="{{ slug }}-heading">{{ title }}</h2>
             {{ if type == "prose" }}
               {{ content }}
+                {{ partial src="{type}" }}
+              {{ /content }}
             {{ elseif type == "rsvp_form" }}
               {{ partial:rsvp_form }}
             {{ /if }}

@@ -119,6 +119,33 @@ sections:
                     icon: bard
                     listable: hidden
                     instructions_position: above
+                    sets:
+                      map:
+                        display: Map
+                        fields:
+                          -
+                            handle: name
+                            field:
+                              input_type: text
+                              antlers: false
+                              display: Name
+                              type: text
+                              icon: text
+                              listable: hidden
+                              instructions_position: above
+                          -
+                            handle: location
+                            field:
+                              input_type: text
+                              antlers: false
+                              display: Location
+                              type: text
+                              icon: text
+                              listable: hidden
+                              instructions_position: above
+                              validate:
+                                - required
+                    antlers: false
                 -
                   handle: slug
                   field:
@@ -130,143 +157,6 @@ sections:
                     instructions_position: above
                     validate:
                       - required
-            form:
-              display: Form
-              fields:
-                -
-                  handle: title
-                  field:
-                    input_type: text
-                    antlers: false
-                    display: Title
-                    type: text
-                    icon: text
-                    listable: hidden
-                    instructions_position: above
-                -
-                  handle: form_description
-                  field:
-                    antlers: false
-                    display: Description
-                    type: textarea
-                    icon: textarea
-                    listable: hidden
-                    instructions_position: above
-                -
-                  handle: fields
-                  field:
-                    fields:
-                      -
-                        handle: field_name
-                        field:
-                          input_type: text
-                          antlers: false
-                          display: Name
-                          type: text
-                          icon: text
-                          listable: hidden
-                          instructions_position: above
-                          width: 50
-                      -
-                        handle: required
-                        field:
-                          default: true
-                          display: 'Required?'
-                          type: toggle
-                          icon: toggle
-                          width: 50
-                          listable: hidden
-                          instructions_position: above
-                      -
-                        handle: field
-                        field:
-                          collapse: false
-                          max_sets: 1
-                          sets:
-                            text_single_line:
-                              display: 'Text field (single-line)'
-                              fields:
-                                -
-                                  handle: field_type
-                                  field:
-                                    options:
-                                      text: Plain
-                                      email: Email
-                                      name: Name
-                                    multiple: false
-                                    clearable: false
-                                    searchable: true
-                                    taggable: false
-                                    push_tags: false
-                                    cast_booleans: false
-                                    default: text
-                                    display: Type
-                                    type: select
-                                    icon: select
-                                    listable: hidden
-                                    instructions_position: above
-                            text_multi_line:
-                              display: 'Text field (multi-line)'
-                              fields: {  }
-                            dropdown:
-                              display: Dropdown
-                              fields:
-                                -
-                                  handle: options
-                                  field:
-                                    fields:
-                                      -
-                                        handle: label
-                                        field:
-                                          input_type: text
-                                          antlers: false
-                                          display: Label
-                                          type: text
-                                          icon: text
-                                          width: 50
-                                          listable: hidden
-                                          instructions_position: above
-                                      -
-                                        handle: default
-                                        field:
-                                          default: false
-                                          display: 'Default?'
-                                          type: toggle
-                                          icon: toggle
-                                          width: 50
-                                          listable: hidden
-                                          instructions_position: above
-                                    mode: table
-                                    reorderable: true
-                                    display: Options
-                                    type: grid
-                                    icon: grid
-                                    listable: hidden
-                                    instructions_position: above
-                          display: Field
-                          type: replicator
-                          icon: replicator
-                          listable: hidden
-                          instructions_position: above
-                    mode: table
-                    add_row: 'Add Field'
-                    reorderable: true
-                    display: Fields
-                    type: grid
-                    icon: grid
-                    listable: hidden
-                    instructions_position: above
-                -
-                  handle: submit_button_text
-                  field:
-                    input_type: text
-                    antlers: false
-                    display: 'Submit button text'
-                    type: text
-                    icon: text
-                    listable: hidden
-                    instructions_position: above
-                    default: Submit
           display: Sections
           type: replicator
           icon: replicator

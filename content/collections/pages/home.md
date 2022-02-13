@@ -34,6 +34,13 @@ sections:
           -
             type: text
             text: ' on Echo Drive at 10:00 am.'
+      -
+        type: set
+        attrs:
+          values:
+            type: map
+            name: 'Church of the Ascension'
+            location: Church+of+the+Ascension
     type: prose
     enabled: true
     slug: ceremony
@@ -90,15 +97,18 @@ sections:
     title: RSVP
     enabled: true
     rsvp_options:
-      - default: false
+      -
+        default: false
         label: 'Regrettably not'
-      - default: true
+      -
+        default: true
         label: 'Happily yes!'
-      - default: false
+      -
+        default: false
         label: Maybe
     slug: rsvp
 updated_by: e48f6027-09ad-467d-861a-02b67df6db3e
-updated_at: 1644593089
+updated_at: 1644715765
 subtitle: 'Saturday, September 3rd, 2022'
 ---
 Welcome to your new Statamic website.
