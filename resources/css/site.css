@@ -12,7 +12,9 @@
     }
 
     p {
-      @apply mt-6 mb-6;
+      @apply my-6;
+      &:first-child { @apply mt-0; }
+      .sr-only:first-child + & { @apply mt-0; }
     }
 
     body {
