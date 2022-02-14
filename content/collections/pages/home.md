@@ -16,6 +16,7 @@ sections:
     slug: welcome
     type: prose
     enabled: true
+    hide_heading: true
   -
     title: Ceremony
     content:
@@ -44,6 +45,7 @@ sections:
     type: prose
     enabled: true
     slug: ceremony
+    hide_heading: false
   -
     title: Reception
     content:
@@ -56,6 +58,7 @@ sections:
     slug: picnic
     type: prose
     enabled: true
+    hide_heading: false
   -
     title: Gifts
     content:
@@ -68,6 +71,7 @@ sections:
     slug: gifts
     type: prose
     enabled: true
+    hide_heading: false
   -
     title: 'COVID stuff'
     content:
@@ -80,6 +84,7 @@ sections:
     slug: covid
     type: prose
     enabled: true
+    hide_heading: false
   -
     title: Parking
     content:
@@ -92,6 +97,7 @@ sections:
     slug: parking
     type: prose
     enabled: true
+    hide_heading: false
   -
     type: rsvp_form
     title: RSVP
@@ -108,7 +114,7 @@ sections:
         label: Maybe
     slug: rsvp
 updated_by: e48f6027-09ad-467d-861a-02b67df6db3e
-updated_at: 1644715765
+updated_at: 1644873262
 subtitle: 'Saturday, September 3rd, 2022'
 ---
 Welcome to your new Statamic website.

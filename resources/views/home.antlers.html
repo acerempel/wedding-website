@@ -28,7 +28,10 @@
     <div class="space-y-8 divide-y divide-maroon-200 grid-main">
         {{ sections }}
         <section id="{{ slug }}" aria-labelledby="{{ slug }}-heading" class="pt-8 first:pt-0">
-            <h2 class="mb-2 text-2xl font-medium" id="{{ slug }}-heading">{{ title }}</h2>
+          <h2
+            class="mb-2 text-2xl font-medium {{ if hide_heading }}sr-only{{ /if }}"
+            id="{{ slug }}-heading"
+          >{{ title }}</h2>
             {{ if type == "prose" }}
               {{ content }}
                 {{ partial src="{type}" }}

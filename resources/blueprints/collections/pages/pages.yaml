@@ -88,6 +88,28 @@ sections:
                     listable: hidden
                     instructions_position: above
                 -
+                  handle: hide_heading
+                  field:
+                    default: false
+                    display: 'Visually hide heading'
+                    type: toggle
+                    icon: toggle
+                    width: 50
+                    listable: hidden
+                    instructions_position: above
+                -
+                  handle: slug
+                  field:
+                    generate: true
+                    display: Slug
+                    type: slug
+                    icon: slug
+                    listable: hidden
+                    instructions_position: above
+                    validate:
+                      - required
+                    width: 50
+                -
                   handle: content
                   field:
                     always_show_set_button: false
@@ -146,17 +168,6 @@ sections:
                               validate:
                                 - required
                     antlers: false
-                -
-                  handle: slug
-                  field:
-                    generate: true
-                    display: Slug
-                    type: slug
-                    icon: slug
-                    listable: hidden
-                    instructions_position: above
-                    validate:
-                      - required
           display: Sections
           type: replicator
           icon: replicator
