@@ -1,24 +1,22 @@
 const colours = require('tailwindcss/colors');
 
 module.exports = {
-  mode: 'jit',
-  purge: {
-    content: [
-      './resources/**/*.antlers.html',
-      './resources/**/*.blade.php',
-      './content/**/*.md'
-    ]
-  },
+  content: [
+    './resources/**/*.antlers.html',
+    './resources/**/*.blade.php',
+    './content/**/*.md',
+    './src/**/*.ts',
+    './src/**/*.tsx',
+  ],
   important: false,
   theme: {
     extend: {
       colors: {
-        grey: colours.trueGray,
+        grey: colours.neutral,
         teal: colours.sky,
-        maroon: colours.blueGray,
+        maroon: colours.slate,
       },
     },
   },
-  variants: {},
   plugins: [],
 }

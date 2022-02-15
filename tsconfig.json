@@ -1,12 +1,18 @@
 {
   "include": [
-    "resources/js/**/*"
+    "src/**/*.ts",
+    "src/**/*.tsx"
   ],
   "compilerOptions": {
-    "target": "ES2015",
+    "target": "ES2017",
     "strict": true,
     "allowJs": true,
     "checkJs": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"]
   }
 }
