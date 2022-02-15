@@ -5,6 +5,8 @@
     type="email" autocomplete="email"
   {{ elseif kind == "telephone" }}
     type="tel" autocomplete="tel"
+  {{ elseif kind == "checkbox" }}
+    type="checkbox"
   {{ elseif kind == "plain" }}
     type="text"
   {{ /if }}

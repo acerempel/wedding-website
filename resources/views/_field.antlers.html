@@ -1,6 +1,7 @@
 <label class="
-  p-3 flex
-  {{ if orient == 'row' }}flex-row space-x-4 items-center{{ else }}flex-col space-y-2{{ /if }}
+  flex
+  {{ if orient == 'row' || orient == 'row-reverse' }}space-x-4 items-center{{ else }}space-y-2{{ /if }}
+  {{ if orient == 'row' }}flex-row{{ elseif orient == 'row-reverse' }}flex-row-reverse{{ else }}flex-col{{ /if }}
   {{ if width == 'full' }}w-full{{ elseif width == 'half' }}w-1/2{{ /if }}
 ">
   <span>{{ name }}{{ if optional }} (optional){{ /if }}</span>
