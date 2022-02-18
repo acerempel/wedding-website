@@ -1,8 +1,0 @@
-name: 'Veevers Rempel'
-super: true
-id: e48f6027-09ad-467d-861a-02b67df6db3e
-password_hash: $2y$10$WDZIETBPVcv5q/M1qaYZAOg18NtQo.SOgtb5Nqy.TrEg6NpIoQDoa
-preferences:
-  collections:
-    pages:
-      after_save: continue_editing
