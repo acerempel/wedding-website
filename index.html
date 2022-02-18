@@ -114,65 +114,8 @@
             class="mb-2 text-2xl font-medium "
             id="rsvp-heading"
           >RSVP</h2>
-                          <form data-netlify="true" method="POST" action="/" name="RSVP">
-    <p id="form-RSVP-description">You may RSVP by filling out this convenient electronic form! RSVPing by email or post is also great.</p>
-    <div class="flex flex-row flex-wrap space-y-2">
-    <label class="
-  flex
-  space-y-2  flex-col  w-1/2">
-  <span>Name</span>
-      <input
-      type="text" autocomplete="name"
-    name="name"
-  required  class="field"
->
-
-  </label>
-
-  <label class="
-  flex
-  space-y-2  flex-col  w-1/2">
-  <span>Email</span>
-      <input
-      type="email" autocomplete="email"
-    name="email"
-  required  class="field"
->
-
-  </label>
-
-  <fieldset class="flex flex-row flex-wrap w-full">
-    <legend>We plan on attending:</legend>
-    <label class="mr-4"><input name="ceremony" class="field" type="checkbox" checked> Ceremony</label>
-    <label class="mr-4"><input name="reception" class="field" type="checkbox" checked> Reception</label>
-  </fieldset>
-  <label class="
-  flex
-  space-y-2  flex-col  ">
-  <span>Does anyone in your party have any dietary restrictions?</span>
-      <textarea
-  name="does-anyone-in-your-party-have-any-dietary-restrictions"
-  required  class="field"
-></textarea>
-
-  </label>
-
-  <label class="
-  flex
-  space-y-2  flex-col  w-full">
-  <span>Message (optional)</span>
-      <textarea
-  name="message"
-    class="field"
-></textarea>
-
-  </label>
-  </div>
-  <button
-    type="submit"
-    class="button ml-3 mt-3">Submit</button>
-</form>
-
+                          <form hidden data-netlify="true" method="POST" action="/" name="rsvp"></form>
+                <div id="rsvp-form"></div>
 
                     </section>
         
