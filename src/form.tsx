@@ -122,6 +122,7 @@ export default function Form() {
           ? <Single guest={state.invitation.guests[0]} />
           : <Multiple guests={state.invitation.guests} />
         }
+        <textarea name="message"></textarea>
         <Show when={state.errorMessage}>
           <p>{state.errorMessage}</p>
         </Show>
@@ -133,29 +134,30 @@ export default function Form() {
   })
 }
 
-function Single(_: { guest: string }) {
-  return <Fields index={0} />
+function Single(props: { guest: string }) {
+  return <Fields index={0} name={props.guest} />
 }
 
 function Multiple(props: {guests: readonly string[]}) {
   return <For each={props.guests}>
     {(guest, index) => <fieldset>
       <legend>{guest}</legend>
-      <Fields index={index()} />
+      <Fields index={index()} name={guest} />
     </fieldset>}
   </For>
 }
 
-function Fields(props: { index: number }) {
+function Fields(props: { index: number, name: string }) {
   return <>
+    <input type="hidden" name={`guest-${index}-name`} value={props.name}></input>
     <fieldset>
       <legend>Do you plan on attending?</legend>
-      <label><input type="radio" required={true} name={"guest-" + props.index + "-attending"} value="yes"/> Yes</label>
-      <label><input type="radio" required={true} name={"guest-" + props.index + "-attending"} value="no"/> No</label>
+      <label><input type="radio" required={true} name={`guest-${props.index}-attending`} value="yes"/> Yes</label>
+      <label><input type="radio" required={true} name={`guest-${props.index}-attending`} value="no"/> No</label>
     </fieldset>
     <label>
       <span>Do you have any dietary restrictions?</span>
-      <input type="text" name={"guest-" + props.index + "dietary-restrictions"} />
+      <input type="text" name={`guest-${props.index}-dietary-restrictions`} />
     </label>
   </>
 }
