@@ -104,34 +104,49 @@ export default function Form() {
   return createMemo(() => {
     if (state.tag === Tag.Initial) {
       return <form onsubmit={findInvitation}>
-        <input type="text" oninput={(event) => setState({ input: event.currentTarget.value })}/>
-        <button type="submit">Find invitation</button>
+        <div class="flex flex-row">
+          <Labeled
+            label="Enter the names of your guests or the names to which your invitation was addressed."
+            class="w-min grow mr-4"
+          >
+            <input type="text" oninput={(event) => setState({ input: event.currentTarget.value })}/>
+          </Labeled>
+          <button type="submit" class="w-max self-end button">Find invitation</button>
+        </div>
         <Show when={state.errorMessage != null}>
           <p>{state.errorMessage}</p>
         </Show>
       </form>
     } else if (state.tag === Tag.GotInvitation) {
-      return <form name="rsvp" method="post" action="/" onsubmit={submit}>
+      return <form name="rsvp" method="post" action="/" class="space-y-6" onsubmit={submit}>
         <input type="hidden" name="form-name" value="rsvp" />
-        <label>
-          <span>Addressee</span>
+        <Labeled label="Addressee">
           <input type="text" readonly={true} name="addressee" value={state.invitation.addressee} />
-        </label>
+        </Labeled>
         {
           state.invitation.guests.length === 1
           ? <Single guest={state.invitation.guests[0]} />
           : <Multiple guests={state.invitation.guests} />
         }
-        <textarea name="message"></textarea>
+        <Labeled label="Message (optional)">
+          <textarea name="message"></textarea>
+        </Labeled>
         <Show when={state.errorMessage}>
           <p>{state.errorMessage}</p>
         </Show>
-        <button type="submit">Submit</button>
+        <button type="submit" class="button">Submit</button>
       </form>
     } else if (state.tag === Tag.Submitted) {
       return <p>Thank you for RSVPing!</p>
     }
   })
+}
+
+function Labeled(props: { children: JSX.Element, label: string, class?: string }) {
+  return <label class={`flex flex-col space-y-1.5 ${props.class}`}>
+    <span class="label">{props.label}</span>
+    {props.children}
+  </label>
 }
 
 function Single(props: { guest: string }) {
@@ -141,23 +156,24 @@ function Single(props: { guest: string }) {
 function Multiple(props: {guests: readonly string[]}) {
   return <For each={props.guests}>
     {(guest, index) => <fieldset>
-      <legend>{guest}</legend>
+      <legend class="font-bold">{guest}</legend>
       <Fields index={index()} name={guest} />
     </fieldset>}
   </For>
 }
 
 function Fields(props: { index: number, name: string }) {
-  return <>
-    <input type="hidden" name={`guest-${index}-name`} value={props.name}></input>
+  return <div class="space-y-3">
+    <input type="hidden" name={`guest-${props.index}-name`} value={props.name}></input>
     <fieldset>
-      <legend>Do you plan on attending?</legend>
-      <label><input type="radio" required={true} name={`guest-${props.index}-attending`} value="yes"/> Yes</label>
-      <label><input type="radio" required={true} name={`guest-${props.index}-attending`} value="no"/> No</label>
+      <legend class="label mb-1.5">Do you plan on attending?</legend>
+      <div class="space-x-3">
+        <label><input type="radio" required={true} name={`guest-${props.index}-attending`} value="yes"/> Yes</label>
+        <label><input type="radio" required={true} name={`guest-${props.index}-attending`} value="no"/> No</label>
+      </div>
     </fieldset>
-    <label>
-      <span>Do you have any dietary restrictions?</span>
+    <Labeled label="Do you have any dietary restrictions?">
       <input type="text" name={`guest-${props.index}-dietary-restrictions`} />
-    </label>
-  </>
+    </Labeled>
+  </div>
 }
