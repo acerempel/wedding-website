@@ -20,6 +20,12 @@
     body {
       @apply leading-normal text-gray-900 bg-maroon-50;
     }
+
+    form {
+      input[type = "text"], input[type = "email"], textarea {
+        @apply courgette;
+      }
+    }
 }
 
 @layer utilities {
@@ -47,7 +53,7 @@
     }
 
     .courgette {
-      @apply px-3 py-2 rounded;
+      @apply px-3 py-2 rounded border border-teal-700;
     }
 
     .aubergine {
@@ -68,5 +74,9 @@
 
     .field {
       @apply courgette border border-maroon-500;
+    }
+
+    .label {
+      @apply text-sm text-maroon-800 italic;
     }
 }
