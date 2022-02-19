@@ -20,11 +20,21 @@ const enum Visibility {
   Whole,
 }
 
+function lessVisibleThan(v1: Visibility | null, v2: Visibility): boolean {
+  if (v1 === null) {
+    return true
+  } else if (v1 === Visibility.Part && v2 === Visibility.Whole) {
+    return true
+  } else {
+    return false
+  }
+}
+
 /** Keep track of which sections are visible. */
 const visible = new Map<SectionInfo, Visibility>()
 
 let current: SectionInfo | null = null
-let manually_selected = false
+let manually_selected: Visibility | null = null
 
 function markCurrent(link: Element) {
     link.setAttribute('aria-current', 'true')
@@ -36,12 +46,15 @@ function markNotCurrent(link: Element) {
 function computeCurrentSection() {
     if (manually_selected) {
       // The current section was already set by someone clicking on the link. We
-      // only change the current section if the manually selected one is no
-      // longer visible.
-      if (current && visible.has(current)) {
-        return
+      // only change the current section if the manually selected one is less
+      // visible than it was when it was selected. (Actually manually_selected
+      // is never assigned `Visibility.Part` – it should be, in case there are
+      // ever sections taller than the viewport.)
+      let current_visibility = current && (visible.get(current) || null)
+      if (lessVisibleThan(current_visibility, manually_selected)) {
+        manually_selected = null
       } else {
-        manually_selected = false
+        return
       }
     }
     // Copy them into an array so we can sort them
@@ -97,7 +110,7 @@ for (const link of navlist!.querySelectorAll('a[href]')) {
   link.addEventListener('click', () => {
     current && markNotCurrent(current.link)
     current = links.get(link) || null
-    manually_selected = true
+    manually_selected = Visibility.Whole
     markCurrent(link)
   })
   const info = { order: index, link, updated: 0 }
