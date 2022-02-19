@@ -20,8 +20,8 @@ const enum Visibility {
   Whole,
 }
 
-function lessVisibleThan(v1: Visibility | null, v2: Visibility): boolean {
-  if (v1 === null) {
+function lessVisibleThan(v1: Visibility | null, v2: Visibility | null): boolean {
+  if (v1 === null && v2 !== null) {
     return true
   } else if (v1 === Visibility.Part && v2 === Visibility.Whole) {
     return true
@@ -34,7 +34,7 @@ function lessVisibleThan(v1: Visibility | null, v2: Visibility): boolean {
 const visible = new Map<SectionInfo, Visibility>()
 
 let current: SectionInfo | null = null
-let manually_selected: Visibility | null = null
+let manually_selected: Visibility | true | null = null
 
 function markCurrent(link: Element) {
     link.setAttribute('aria-current', 'true')
@@ -51,6 +51,7 @@ function computeCurrentSection() {
       // is never assigned `Visibility.Part` – it should be, in case there are
       // ever sections taller than the viewport.)
       let current_visibility = current && (visible.get(current) || null)
+      if (manually_selected === true) { manually_selected = current_visibility }
       if (lessVisibleThan(current_visibility, manually_selected)) {
         manually_selected = null
       } else {
