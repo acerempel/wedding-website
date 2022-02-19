@@ -7,7 +7,10 @@ type SectionInfo = {
     order: number,
 }
 
+/** Mapping from heading elements to SectionInfo for section headed by the heading */
 const sections = new Map<Element, SectionInfo>()
+/** Mapping from <a> elements in the toc to SectionInfo for section that the <a> links to */
+const links = new Map<Element, SectionInfo>()
 
 /** How much of an element is visible? */
 const enum Visibility {
@@ -21,6 +24,7 @@ const enum Visibility {
 const visible = new Map<SectionInfo, Visibility>()
 
 let current: SectionInfo | null = null
+let manually_selected = false
 
 function markCurrent(link: Element) {
     link.setAttribute('aria-current', 'true')
@@ -30,6 +34,16 @@ function markNotCurrent(link: Element) {
 }
 
 function computeCurrentSection() {
+    if (manually_selected) {
+      // The current section was already set by someone clicking on the link. We
+      // only change the current section if the manually selected one is no
+      // longer visible.
+      if (current && visible.has(current)) {
+        return
+      } else {
+        manually_selected = false
+      }
+    }
     // Copy them into an array so we can sort them
     let visible_now = [...visible]
     const visible_entirely = visible_now.filter(([_section, visibility]) => visibility === Visibility.Whole)
@@ -80,8 +94,15 @@ for (const link of navlist!.querySelectorAll('a[href]')) {
       console.error(`${slug} is not the id of anything `)
       continue
   }
+  link.addEventListener('click', () => {
+    current && markNotCurrent(current.link)
+    current = links.get(link) || null
+    manually_selected = true
+    markCurrent(link)
+  })
   const info = { order: index, link, updated: 0 }
   sections.set(target, info)
+  links.set(link, info)
   index += 1
   sectionObserver.observe(target)
 }
