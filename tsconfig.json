@@ -13,7 +13,6 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "resolveJsonModule": true,
-    "types": ["vite/client"]
+    "resolveJsonModule": true
   }
 }
