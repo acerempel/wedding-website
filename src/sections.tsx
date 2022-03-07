@@ -72,7 +72,7 @@ function computeCurrentSection() {
     // console.log("Visible:", visible_now.map(sec => (sec.link as HTMLAnchorElement).href))
     current && markNotCurrent(current.link)
     // The visible section that is first in DOM order is the current section
-    current = visible_now[0][0]
+    current = visible_now[0] && visible_now[0][0]
     current && markCurrent(current.link)
 }
 
@@ -111,30 +111,28 @@ interface Section {
 
 const [state, updateState] = createStore<{ sections: Section[] }>({ sections: [] })
 
-export function Section(props: {heading: string, invisibleHeading?: boolean}) {
+export function Section(props: {heading: string, children: JSX.Element | JSX.Element[], invisibleHeading?: boolean}) {
   // Can't observe it right away because this function is called (by way of
   // the `ref` attribute) before the element is added to the DOM.
   let element = undefined as unknown as HTMLElement;
-  const its_slug = () => slug(props.heading)
+  const its_slug = slug(props.heading)
 
   onMount(() => {
     sectionObserver?.observe(element)
-  })
-
-  createEffect(() => {
     const section: Section = {
       heading: props.heading,
-      slug: its_slug(),
+      slug: its_slug,
       element: element as unknown as DeepReadonly<HTMLElement>,
     }
     updateState('sections', sections => [...sections, section])
   })
 
   return (
-    <section ref={element} id={its_slug()} class="pt-8 first:pt-0">
+    <section ref={element} id={its_slug} class="pt-8 first:pt-0">
       <h2
-        class={"mb-2 text-2xl font-medium" + props.invisibleHeading ? ' sr-only' : ''}
+        class={"mb-2 text-2xl font-medium" + (props.invisibleHeading ? ' sr-only' : '')}
       >{props.heading}</h2>
+      {props.children}
     </section>
   )
 }
@@ -150,23 +148,21 @@ export function TOC() {
     const link = event.currentTarget
     current && markNotCurrent(current.link)
     current = sections_by_link.get(link) || null
-    manually_selected = Visibility.Whole
+    manually_selected = true
     markCurrent(link)
   }
 
   return (
     <ul class="space-y-4">
-      <For each={state.sections}>
-        {(section, index) => (
+        {state.sections.map((section, index) => (
           <li>
             <a
-            ref={link => registerLink(link, section, index())}
+            ref={link => registerLink(link, section, index)}
             href={`#${section.slug}`}
             onclick={linkClicked}
-            >section.heading</a>
+            >{section.heading}</a>
           </li>
-        )}
-      </For>
+        ))}
     </ul>
   )
 }
