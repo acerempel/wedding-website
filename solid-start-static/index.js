@@ -64,9 +64,9 @@ export default function () {
       ]);
       copyFileSync(
         join(config.root, ".solid", "server", `entry-server.js`),
-        join(config.root, ".solid", "server", "app.mjs")
+        join(config.root, ".solid", "server", "app.js")
       );
-      const pathToServer = join(config.root, ".solid", "server", "index.mjs");
+      const pathToServer = join(config.root, ".solid", "server", "index.js");
       copyFileSync(join(__dirname, "entry.js"), pathToServer);
       const pathToDist = resolve(config.root, "dist");
       const pageRoot = join(config.root, appRoot, config.solidOptions.routesDir);

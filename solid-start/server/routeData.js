@@ -1,38 +1,8 @@
 // All credit for this work goes to the amazing Next.js team.
 // https://github.com/vercel/next.js/blob/canary/packages/next/build/babel/plugins/next-ssg-transform.ts
-// This is adapted to work with any server() calls and transpile it into multiple api function for a file.
+// This is adapted to work with routeData functions. It can be run in two modes, one which preserves the routeData and the Component in the same file, and one which creates a
 
-import crypto from "crypto";
-
-function decorateServerExport(t, path, state) {
-  const gsspName = "__has_server";
-  const gsspId = t.identifier(gsspName);
-  const addGsspExport = exportPath => {
-    if (state.done) {
-      return;
-    }
-    state.done = true;
-    const [pageCompPath] = exportPath.replaceWithMultiple([
-      t.exportNamedDeclaration(
-        t.variableDeclaration("var", [t.variableDeclarator(gsspId, t.booleanLiteral(true))]),
-        [t.exportSpecifier(gsspId, gsspId)]
-      ),
-      exportPath.node
-    ]);
-    exportPath.scope.registerDeclaration(pageCompPath);
-  };
-
-  path.traverse({
-    ExportDefaultDeclaration(exportDefaultPath) {
-      // addGsspExport(exportDefaultPath);
-    },
-    ExportNamedDeclaration(exportNamedPath) {
-      // addGsspExport(exportNamedPath);
-    }
-  });
-}
-
-function transformServer({ types: t, template }) {
+function transformRouteData({ types: t }) {
   function getIdentifier(path) {
     const parentPath = path.parentPath;
     if (parentPath.type === "VariableDeclarator") {
@@ -50,9 +20,10 @@ function transformServer({ types: t, template }) {
     }
     return path.node.id && path.node.id.type === "Identifier" ? path.get("id") : null;
   }
+
   function isIdentifierReferenced(ident) {
     const b = ident.scope.getBinding(ident.node.name);
-    if (b?.referenced) {
+    if (b && b.referenced) {
       if (b.path.type === "FunctionDeclaration") {
         return !b.constantViolations
           .concat(b.referencePaths)
@@ -64,7 +35,7 @@ function transformServer({ types: t, template }) {
   }
   function markFunction(path, state) {
     const ident = getIdentifier(path);
-    if (ident?.node && isIdentifierReferenced(ident)) {
+    if (ident && ident.node && isIdentifierReferenced(ident)) {
       state.refs.add(ident);
     }
   }
@@ -75,21 +46,12 @@ function transformServer({ types: t, template }) {
     }
   }
 
-  function hashFn(str) {
-    return crypto
-      .createHash("shake256", { outputLength: 5 /* bytes = 10 hex digits*/ })
-      .update(str)
-      .digest("hex");
-  }
   return {
     visitor: {
       Program: {
         enter(path, state) {
           state.refs = new Set();
-          state.isPrerender = false;
-          state.isServerProps = false;
           state.done = false;
-          state.servers = 0;
           path.traverse(
             {
               VariableDeclarator(variablePath, variableState) {
@@ -120,9 +82,9 @@ function transformServer({ types: t, template }) {
                   const elements = pattern.get("elements");
                   elements.forEach(e => {
                     let local;
-                    if (e.node?.type === "Identifier") {
+                    if (e.node && e.node.type === "Identifier") {
                       local = e;
-                    } else if (e.node?.type === "RestElement") {
+                    } else if (e.node && e.node.type === "RestElement") {
                       local = e.get("argument");
                     } else {
                       return;
@@ -133,12 +95,14 @@ function transformServer({ types: t, template }) {
                   });
                 }
               },
-              ExportDefaultDeclaration(exportNamedPath, exportNamedState) {
+              ExportDefaultDeclaration(exportNamedPath) {
+                // if opts.keep is true, we don't remove the routeData export
                 if (!state.opts.keep) {
                   exportNamedPath.remove();
                 }
               },
-              ExportNamedDeclaration(exportNamedPath, exportNamedState) {
+              ExportNamedDeclaration(exportNamedPath) {
+                // if opts.keep is false, we don't remove the routeData export
                 if (!state.opts.keep) {
                   return;
                 }
@@ -202,7 +166,7 @@ function transformServer({ types: t, template }) {
           let count;
           function sweepFunction(sweepPath) {
             const ident = getIdentifier(sweepPath);
-            if (ident?.node && refs.has(ident) && !isIdentifierReferenced(ident)) {
+            if (ident && ident.node && refs.has(ident) && !isIdentifierReferenced(ident)) {
               ++count;
               if (
                 t.isAssignmentExpression(sweepPath.parentPath) ||
@@ -263,9 +227,9 @@ function transformServer({ types: t, template }) {
                   const elements = pattern.get("elements");
                   elements.forEach(e => {
                     let local;
-                    if (e.node?.type === "Identifier") {
+                    if (e.node && e.node.type === "Identifier") {
                       local = e;
-                    } else if (e.node?.type === "RestElement") {
+                    } else if (e.node && e.node.type === "RestElement") {
                       local = e.get("argument");
                     } else {
                       return;
@@ -288,10 +252,9 @@ function transformServer({ types: t, template }) {
               ImportNamespaceSpecifier: sweepImport
             });
           } while (count);
-          decorateServerExport(t, path, state);
         }
       }
     }
   };
 }
-export { transformServer as default };
+export { transformRouteData as default };

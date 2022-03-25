@@ -6,7 +6,6 @@ import inspect from "vite-plugin-inspect";
 import { getRoutes, stringifyRoutes } from "./routes.js";
 import { createDevHandler } from "./runtime/devServer.js";
 import c from "picocolors";
-import babel from "@babel/core";
 import babelServerModule from "./server/babel.js";
 import { join, resolve } from "path";
 import vite from "vite";
@@ -57,7 +56,7 @@ function solidStartInlineServerModules(options) {
     },
     name: "solid-start-inline-server-modules",
     configureServer(vite) {
-      vite.httpServer?.once("listening", async () => {
+      vite.httpServer.once("listening", async () => {
         const protocol = config.server.https ? "https" : "http";
         const port = config.server.port;
 
@@ -86,7 +85,7 @@ function solidStartFileSystemRouter(options) {
       config = _config;
     },
     configureServer(vite) {
-      vite.httpServer?.once("listening", async () => {
+      vite.httpServer.once("listening", async () => {
         const protocol = config.server.https ? "https" : "http";
         const port = config.server.port;
         const routes = await getRoutes({
@@ -95,18 +94,35 @@ function solidStartFileSystemRouter(options) {
             "jsx",
             "js",
             "ts",
-            ...(options.extensions?.map(s => (Array.isArray(s) ? s[0] : s)).map(s => s.slice(1)) ??
+            ...((options.extensions &&
+              options.extensions.map(s => (Array.isArray(s) ? s[0] : s)).map(s => s.slice(1))) ||
               [])
           ]
         });
         const label = `  > Routes: `;
+
+        let flatRoutes = [];
+
+        function addRoute(route) {
+          if (route.children) {
+            for (var r of route.children) {
+              addRoute({ ...r, path: route.path + r.path, _id: route._id + r.path });
+            }
+          }
+
+          flatRoutes.push(route);
+        }
+
+        for (var r of routes.pageRoutes) {
+          addRoute(r);
+        }
+
         setTimeout(() => {
           // eslint-disable-next-line no-console
           console.log(
-            `${label}\n${routes.pageRoutes
-              .flatMap(r => (r.children ? r.children : [r]))
+            `${label}\n${flatRoutes
               .map(r => `     ${c.blue(`${protocol}://localhost:${port}${r.path}`)}`)
-              .join("\n")}\n`
+              .join("\n")}`
           );
         }, 100);
       });
@@ -124,8 +140,21 @@ function solidStartFileSystemRouter(options) {
         }).transform(code, id, transformOptions);
       };
 
+      let ssr = process.env.TEST_ENV === "client" ? false : isSsr;
+
+      if (/.test.(tsx)/.test(id) && config.solidOptions.ssr) {
+        return babelSolidCompiler(code, id, (source, id) => ({
+          plugins: [
+            options.ssr && [
+              babelServerModule,
+              { ssr, root: process.cwd(), minify: process.env.NODE_ENV === "production" }
+            ]
+          ]
+        }));
+      }
+
       if (/.data.(ts|js)/.test(id) && config.solidOptions.ssr) {
-        return babelSolidCompiler(code, id.replace(/.data.ts/, ".tsx"), (source, id, ssr) => ({
+        return babelSolidCompiler(code, id.replace(/.data.ts/, ".tsx"), (source, id) => ({
           plugins: [
             options.ssr && [
               babelServerModule,
@@ -134,7 +163,7 @@ function solidStartFileSystemRouter(options) {
           ]
         }));
       } else if (/\?data/.test(id)) {
-        return babelSolidCompiler(code, id.replace("?data", ""), (source, id, ssr) => ({
+        return babelSolidCompiler(code, id.replace("?data", ""), (source, id) => ({
           plugins: [
             options.ssr && [
               babelServerModule,
@@ -144,7 +173,7 @@ function solidStartFileSystemRouter(options) {
           ].filter(Boolean)
         }));
       } else if (id.includes("routes")) {
-        return babelSolidCompiler(code, id.replace("?data", ""), (source, id, ssr) => ({
+        return babelSolidCompiler(code, id.replace("?data", ""), (source, id) => ({
           plugins: [
             options.ssr && [
               babelServerModule,
@@ -168,7 +197,8 @@ function solidStartFileSystemRouter(options) {
             "jsx",
             "js",
             "ts",
-            ...(options.extensions?.map(s => (Array.isArray(s) ? s[0] : s)).map(s => s.slice(1)) ??
+            ...((options.extensions &&
+              options.extensions.map(s => (Array.isArray(s) ? s[0] : s)).map(s => s.slice(1))) ||
               [])
           ]
         });
@@ -189,7 +219,7 @@ function solidsStartRouteManifest(options) {
           "ts",
           "jsx",
           "js",
-          ...(options.extensions?.map(e => e.slice(1)) ?? [])
+          ...((options.extensions && options.extensions.map(e => e.slice(1))) || [])
         ].join("|")}))$`
       );
 
