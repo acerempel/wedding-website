@@ -4,16 +4,21 @@
     "src/**/*.tsx"
   ],
   "compilerOptions": {
-    "target": "ES2019",
+    "target": "ESNext",
+    "module": "ESNext",
     "strict": true,
     "allowJs": true,
-    "checkJs": true,
+    "checkJs": false,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "resolveJsonModule": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   }
 }
