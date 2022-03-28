@@ -1,4 +1,7 @@
-const navlist = document.getElementById('home-nav')
+import {createEffect, For, JSX, onMount} from "solid-js"
+import {createStore, DeepReadonly} from "solid-js/store"
+import {isServer} from"solid-js/web"
+import slug from "slug"
 
 type SectionInfo = {
     /** The <a> element. */
@@ -7,10 +10,10 @@ type SectionInfo = {
     order: number,
 }
 
-/** Mapping from heading elements to SectionInfo for section headed by the heading */
+/** Mapping from <section> elements to SectionInfo for that section */
 const sections = new Map<Element, SectionInfo>()
 /** Mapping from <a> elements in the toc to SectionInfo for section that the <a> links to */
-const links = new Map<Element, SectionInfo>()
+const sections_by_link = new Map<Element, SectionInfo>()
 
 /** How much of an element is visible? */
 const enum Visibility {
@@ -69,11 +72,12 @@ function computeCurrentSection() {
     // console.log("Visible:", visible_now.map(sec => (sec.link as HTMLAnchorElement).href))
     current && markNotCurrent(current.link)
     // The visible section that is first in DOM order is the current section
-    current = visible_now[0][0]
+    current = visible_now[0] && visible_now[0][0]
     current && markCurrent(current.link)
 }
 
-const sectionObserver = new IntersectionObserver(
+function makeObserver() {
+  return new IntersectionObserver(
     function(entries) {
       // Update the set of visible sections
       for (const entry of entries) {
@@ -94,29 +98,71 @@ const sectionObserver = new IntersectionObserver(
         // it changes from wholly to partially visible, or vice versa.
         threshold: [0, 1],
     }
-)
+  )
+}
 
-// For keeping track of the sections' order, since querySelectorAll returns
-// things in DOM order.
-let index = 0
-for (const link of navlist!.querySelectorAll('a[href]')) {
-  const url = new URL((link as HTMLAnchorElement).href)
-  // Get the part after the hash symbol
-  const slug = url.hash.slice(1)
-  const target = document.getElementById(slug)
-  if (!target) {
-      console.error(`${slug} is not the id of anything `)
-      continue
-  }
-  link.addEventListener('click', () => {
-    current && markNotCurrent(current.link)
-    current = links.get(link) || null
-    manually_selected = Visibility.Whole
-    markCurrent(link)
+const sectionObserver = isServer ? undefined : makeObserver()
+
+interface Section {
+  readonly slug: string
+  readonly heading: string
+  readonly element: DeepReadonly<HTMLElement>
+}
+
+const [state, updateState] = createStore<{ sections: Section[] }>({ sections: [] })
+
+export function Section(props: {heading: string, children: JSX.Element | JSX.Element[], invisibleHeading?: boolean}) {
+  // Can't observe it right away because this function is called (by way of
+  // the `ref` attribute) before the element is added to the DOM.
+  let element = undefined as unknown as HTMLElement;
+  const its_slug = slug(props.heading)
+
+  onMount(() => {
+    sectionObserver?.observe(element)
+    const section: Section = {
+      heading: props.heading,
+      slug: its_slug,
+      element: element as unknown as DeepReadonly<HTMLElement>,
+    }
+    updateState('sections', sections => [...sections, section])
   })
-  const info = { order: index, link, updated: 0 }
-  sections.set(target, info)
-  links.set(link, info)
-  index += 1
-  sectionObserver.observe(target)
+
+  return (
+    <section ref={element} id={its_slug} class="pt-8 first:pt-0">
+      <h2
+        class={"mb-2 text-2xl font-medium" + (props.invisibleHeading ? ' sr-only' : '')}
+      >{props.heading}</h2>
+      {props.children}
+    </section>
+  )
+}
+
+export function TOC() {
+  function registerLink(link: HTMLAnchorElement, section: Section, index: number) {
+    const info = { order: index, link, updated: 0 }
+    sections.set(section.element as unknown as Element, info)
+    sections_by_link.set(link, info)
+  }
+
+  const linkClicked: JSX.EventHandler<HTMLAnchorElement, MouseEvent> = (event) => {
+    const link = event.currentTarget
+    current && markNotCurrent(current.link)
+    current = sections_by_link.get(link) || null
+    manually_selected = true
+    markCurrent(link)
+  }
+
+  return (
+    <ul class="space-y-4">
+        {state.sections.map((section, index) => (
+          <li>
+            <a
+            ref={link => registerLink(link, section, index)}
+            href={`#${section.slug}`}
+            onclick={linkClicked}
+            >{section.heading}</a>
+          </li>
+        ))}
+    </ul>
+  )
 }

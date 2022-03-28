@@ -1,10 +1,7 @@
-import { defineConfig } from 'vite';
-import solidPlugin from 'vite-plugin-solid';
+import { defineConfig } from "vite";
 
-export default defineConfig({
-  plugins: [solidPlugin()],
-  build: {
-    target: 'esnext',
-    polyfillDynamicImport: false,
-  },
+export default defineConfig(async () => {
+  const solid = (await import("solid-start")).default
+  const startStatic = (await import("solid-start-static")).default
+  return { plugins: [solid({ adapter: startStatic() })] }
 });
