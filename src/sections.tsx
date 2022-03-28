@@ -160,6 +160,7 @@ export function TOC() {
             ref={link => registerLink(link, section, index)}
             href={`#${section.slug}`}
             onclick={linkClicked}
+            rel="external"
             >{section.heading}</a>
           </li>
         ))}
