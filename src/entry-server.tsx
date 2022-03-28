@@ -1,14 +1,15 @@
 import { renderToStringAsync } from "solid-js/web";
 import { StartServer } from "solid-start/components";
+import {Request, Response, Headers} from "undici";
 
 export default async function({
   request,
   manifest,
-  headers,
+  headers = new Headers(),
   context = {}
 }: {
   request: Request;
-  headers: Response["headers"];
+  headers: Headers;
   manifest: Record<string, any>;
   context?: Record<string, any>;
 }) {
@@ -20,6 +21,6 @@ export default async function({
 
   return new Response(markup, {
     status: 200,
-    headers
+    headers,
   });
 }

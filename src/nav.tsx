@@ -1,7 +1,7 @@
 import {createSignal} from "solid-js"
 import { isServer } from "solid-js/web"
 import {TOC} from './sections'
-import theme from 'tailwindcss/defaultTheme'
+import theme from 'tailwindcss/defaultTheme.js'
 
 const small = (theme.screens as { [key: string]: string })?.sm
 

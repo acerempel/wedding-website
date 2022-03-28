@@ -4,7 +4,7 @@ import { fileURLToPath } from "url";
 import { createRequest } from "solid-start/runtime/fetch.js";
 import prepareManifest from "solid-start/runtime/prepareManifest.js";
 import { fetch, Headers, Response, Request } from "undici";
-import entry from "./app.js";
+import entry from "./app.mjs";
 
 Object.assign(globalThis, {
   Request,
