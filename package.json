@@ -27,8 +27,4 @@
   "engines": {
     "node": ">=16"
   },
-  "workspaces": [
-    "./solid-start",
-    "./solid-start-static"
-  ]
 }
