@@ -15,18 +15,20 @@
     "solid-app-router": "^0.3.0",
     "solid-js": "^1.3.7",
     "solid-meta": "^0.27.3",
-    "solid-start": "workspace:*",
-    "solid-start-static": "workspace:*",
+    "solid-start": "0.1.0-alpha.69",
+    "solid-start-static": "0.1.0-alpha.69",
     "tailwindcss": "^3.0.22",
     "typescript": "^4.5.5",
     "undici": "^4.12.2",
     "vite": "^2.8.0",
-    "vite-plugin-inspect": "^0.3.13"
+    "vite-plugin-inspect": "^0.3.13",
+    "@types/tailwindcss": "^3.0.9"
   },
   "engines": {
     "node": ">=16"
   },
-  "dependencies": {
-    "@types/tailwindcss": "^3.0.9"
-  }
+  "workspaces": [
+    "./solid-start",
+    "./solid-start-static"
+  ]
 }
