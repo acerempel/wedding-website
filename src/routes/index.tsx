@@ -18,21 +18,28 @@ export default function Home() {
       <Nav />
       <div class="space-y-8 divide-y divide-maroon-200 grid-main">
         <Section heading="Welcome!" invisibleHeading>
-        <p>We joyfully anticipate celebrating our marriage together with our families and friends.</p>
+          <p>We joyfully anticipate celebrating our marriage together with our families and friends.</p>
         </Section>
         <Section heading="Ceremony">
           <p>The wedding ceremony will take place at<strong> Church of the Ascension</strong> at 253 Echo Drive at 10:30 am.</p>
           <GoogleMap place_id="ChIJ_R9jrbwFzkwRYSDNlNd8XgE" name="Church of the Ascension" />
         </Section>
         <Section heading="Reception">
-          <p>The reception will take place at the Old Town Hall community centre, located at 61 Main St. Come at 5:30pm for drinks and conversation; dinner will be served at 6:00pm.</p>
+          <p>
+            The reception will take place at the Old Town Hall community centre, located at 61 Main St.
+            Come at 5:30pm for drinks and conversation; dinner will be served at 6:00pm.
+          </p>
           <GoogleMap name="Old Town Hall" place_id="ChIJ-WJodKMFzkwRmAC3pmwc-Jc" />
         </Section>
         <Section heading="Registry">
           <p>Looking for gift ideas? <a href="https://www.myregistry.com/wedding-registry/jocelyn-veevers-and-alan-rempel-ottawa-on/2989103/giftlist">Visit our wedding registry!</a></p>
         </Section>
         <Section heading="RSVP">
-          <p>If you like, you may RSVP using this handy electronic form! RSVPs via email or post or other means are also acceptable.</p>
+          <p>
+            We ask that you RSVP by June 1st. If you like, you may do so using this handy electronic form!
+            RSVPs via email or post or other means are also acceptable;
+            in that case, be sure to mention any dietary restrictions that apply to anyone in your party.
+          </p>
           <ServerForm />
           <RSVPForm />
         </Section>
