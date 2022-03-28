@@ -1,3 +1,9 @@
+---
+import '../tailwind.css'
+import {Section} from '../sections'
+import Nav from '../nav'
+import RSVPForm from '../form'
+---
 <!doctype html>
 <html lang="en">
     <head>
@@ -18,39 +24,11 @@
   <header class="grid-header">
     <h1 class="text-3xl font-light">The wedding of Jocelyn Veevers and Alan Rempel</h1>
     <p class="italic my-3">Saturday, September 3rd, 2022</p>  </header>
-    <nav class="grid-left justify-self-end sm:justify-self-stretch sticky top-4 sm:top-0 sm:relative">
-    <button type="button" class="block sm:hidden button drop-shadow-md" id="nav-show">Contents</button>
-    <div
-      class="
-        absolute sm:sticky top-0 sm:top-6 right-0 text-right items-end
-        hidden sm:flex flex-col drop-shadow-lg sm:drop-shadow-none bg-teal-100
-        aubergine sm:not-courgette sm:bg-transparent
-      " id="home-nav" aria-expanded="false">
-        <button
-            type="button" aria-controls="home-nav" id="nav-hide"
-            class="block sm:hidden button mb-4 ml-auto">Close</button>
-        <ul class="space-y-4">
-                        <li><a href="#welcome">Welcome!</a></li>
-                        <li><a href="#ceremony">Ceremony</a></li>
-                        <li><a href="#picnic">Reception</a></li>
-                        <li><a href="#gifts">Gifts</a></li>
-                        <li><a href="#covid">COVID stuff</a></li>
-                        <li><a href="#parking">Parking</a></li>
-                        <li><a href="#rsvp">RSVP</a></li>
-            
-        </ul>
-    </div>
-    </nav>
+    <Nav />
     <div class="space-y-8 divide-y divide-maroon-200 grid-main">
-                <section id="welcome" aria-labelledby="welcome-heading" class="pt-8 first:pt-0">
-          <h2
-            class="mb-2 text-2xl font-medium sr-only"
-            id="welcome-heading"
-          >Welcome!</h2>
-                                          <p>We joyfully anticipate celebrating our marriage together with our families and friends.</p>
-
-              
-                    </section>
+          <Section heading="Welcome!" invisibleHeading>
+            <p>We joyfully anticipate celebrating our marriage together with our families and friends.</p>
+          </Section>
                 <section id="ceremony" aria-labelledby="ceremony-heading" class="pt-8 first:pt-0">
           <h2
             class="mb-2 text-2xl font-medium "
@@ -132,7 +110,7 @@
                             <input name="guest-4-attending">
                             <input name="message">
                           </form>
-                <div id="rsvp-form"></div>
+                <RSVPForm />
 
                     </section>
         
