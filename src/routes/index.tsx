@@ -20,7 +20,7 @@ export default function Home() {
         <p>We joyfully anticipate celebrating our marriage together with our families and friends.</p>
         </Section>
         <Section heading="Ceremony">
-          <p>The wedding ceremony will take place at<strong> Church of the Ascension</strong> on Echo Drive at 10:00 am.</p>
+          <p>The wedding ceremony will take place at<strong> Church of the Ascension</strong> at 253 Echo Drive at 10:30 am.</p>
 
           <details>
             <summary>Show map to Church of the Ascension</summary>
@@ -35,12 +35,13 @@ export default function Home() {
           </details>
         </Section>
         <Section heading="Reception">
-          <p>The reception will take place at the Old Town Hall community centre.</p>
+          <p>The reception will take place at the Old Town Hall community centre, located at 61 Main St. Come at 5:30pm for drinks and conversation; dinner will be served at 6:00pm.</p>
         </Section>
         <Section heading="Registry">
-          <p>Looking for gift ideas? Visit our wedding registry!</p>
+          <p>Looking for gift ideas? <a href="https://www.myregistry.com/wedding-registry/jocelyn-veevers-and-alan-rempel-ottawa-on/2989103/giftlist">Visit our wedding registry!</a></p>
         </Section>
         <Section heading="RSVP">
+          <p>If you like, you may RSVP using this handy electronic form! RSVPs via email or post or other means are also acceptable.</p>
           <ServerForm />
           <RSVPForm />
         </Section>
