@@ -2,6 +2,7 @@ import RSVPForm from '../form'
 import ServerForm from '~/server-form'
 import Nav from '../nav'
 import { Section } from "~/sections";
+import {GoogleMap} from "~/map";
 
 export default function Home() {
   const mainClasses = `
@@ -21,21 +22,11 @@ export default function Home() {
         </Section>
         <Section heading="Ceremony">
           <p>The wedding ceremony will take place at<strong> Church of the Ascension</strong> at 253 Echo Drive at 10:30 am.</p>
-
-          <details>
-            <summary>Show map to Church of the Ascension</summary>
-            <div class="flex justify-center">
-              <iframe
-              width="358" height="250"
-              frameborder="0" class="border-0"
-              loading="lazy"
-              src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJ_R9jrbwFzkwRYSDNlNd8XgE&key=AIzaSyD0nXcUaXvggMnKByvgGL6O5QnhzLiOV2s"
-              ></iframe>
-            </div>
-          </details>
+          <GoogleMap place_id="ChIJ_R9jrbwFzkwRYSDNlNd8XgE" name="Church of the Ascension" />
         </Section>
         <Section heading="Reception">
           <p>The reception will take place at the Old Town Hall community centre, located at 61 Main St. Come at 5:30pm for drinks and conversation; dinner will be served at 6:00pm.</p>
+          <GoogleMap name="Old Town Hall" place_id="ChIJ-WJodKMFzkwRmAC3pmwc-Jc" />
         </Section>
         <Section heading="Registry">
           <p>Looking for gift ideas? <a href="https://www.myregistry.com/wedding-registry/jocelyn-veevers-and-alan-rempel-ottawa-on/2989103/giftlist">Visit our wedding registry!</a></p>
