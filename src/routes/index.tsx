@@ -18,23 +18,37 @@ export default function Home() {
       <Nav />
       <div class="space-y-8 divide-y divide-maroon-200 grid-main">
         <Section heading="Welcome!" invisibleHeading>
-          <p>We joyfully anticipate celebrating our marriage together with our families and friends.</p>
+          <p>
+            Welcome! We joyfully anticipate celebrating our marriage together with our families and friends.
+          </p>
         </Section>
         <Section heading="Ceremony">
-          <p>The wedding ceremony will take place at<strong> Church of the Ascension</strong> at 253 Echo Drive at 10:30 am.</p>
+          <p>
+            The wedding ceremony will take place at the <strong>Church of the Ascension</strong> at 10:30 am.
+            The church is located at 253 Echo Drive, Ottawa, Ontario.
+            See the map below, courtesy of Google, for more details and directions.
+          </p>
           <GoogleMap place_id="ChIJ_R9jrbwFzkwRYSDNlNd8XgE" name="Church of the Ascension" />
         </Section>
         <Section heading="Reception">
           <p>
-            The reception will take place at the Old Town Hall community centre, located at 61 Main St.
-            Come at 5:00pm for drinks, bites, and conversation
-            (note that this start time is half an hour earlier than what is on your invitations, which say 5:30pm).
+            The reception will take place at the <strong>Old Town Hall Community Centre</strong>, located at 61 Main St.
+            Come at 5:00pm for drinks, bites, and conversation 
+            <em>(note that this start time is half an hour earlier than what is on your invitations, which say 5:30pm)</em>.
             Dinner will be served at 6:00pm.
+          </p>
+          <p>
+            The Old Town Hall is situated very close to the church, about five minutes away on foot;
+            most guests who come by automobile will therefore need only one parking spot for both venues.
+            Again, the map below may be helpful.
           </p>
           <GoogleMap name="Old Town Hall" place_id="ChIJ-WJodKMFzkwRmAC3pmwc-Jc" />
         </Section>
-        <Section heading="Registry">
-          <p>Looking for gift ideas? <a href="https://www.myregistry.com/wedding-registry/jocelyn-veevers-and-alan-rempel-ottawa-on/2989103/giftlist">Visit our wedding registry!</a></p>
+        <Section heading="Gifts">
+          <p>
+            Looking for gift ideas? 
+            <a href="https://www.myregistry.com/wedding-registry/jocelyn-veevers-and-alan-rempel-ottawa-on/2989103/giftlist">Visit our wedding registry!</a>
+          </p>
         </Section>
         <Section heading="RSVP">
           <p>
