@@ -27,7 +27,9 @@ export default function Home() {
         <Section heading="Reception">
           <p>
             The reception will take place at the Old Town Hall community centre, located at 61 Main St.
-            Come at 5:30pm for drinks and conversation; dinner will be served at 6:00pm.
+            Come at 5:00pm for drinks, bites, and conversation
+            (note that this start time is half an hour earlier than what is on your invitations, which say 5:30pm).
+            Dinner will be served at 6:00pm.
           </p>
           <GoogleMap name="Old Town Hall" place_id="ChIJ-WJodKMFzkwRmAC3pmwc-Jc" />
         </Section>
