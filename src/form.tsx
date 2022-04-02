@@ -155,8 +155,12 @@ export default function Form() {
       return <form name="rsvp" method="post" action="/" class="space-y-6" onsubmit={submit}>
         <input type="hidden" name="form-name" value="rsvp" />
         <Labeled label="Addressee">
-          <div class="relative mr-4 w-max">
-            <input type="text" style="padding-right: calc(0.75rem * 2 + 5ch)" readonly={true} name="addressee" value={state.invitation.addressee} />
+          <div class="relative mr-4">
+            <input
+              type="text" readonly={true} name="addressee" value={state.invitation.addressee}
+              style="padding-right: calc(0.75rem * 2 + 5ch)"
+              class="w-full"
+            />
             <button
               type="button"
               class="interactive absolute inset-y-1 right-1 px-2 py-1 rounded hover:bg-teal-100"
