@@ -1,3 +1,3 @@
 [build]
 publish = "dist/"
-command = "yarn dlx pnpm install && yarn dlx pnpm build"
+command = "pnpm run build"
