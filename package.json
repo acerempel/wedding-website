@@ -3,7 +3,9 @@
   "scripts": {
     "dev": "solid-start dev",
     "build": "solid-start build",
-    "start": "solid-start start"
+    "start": "solid-start start",
+    "deploy": "netlify deploy --build",
+    "deploy:prod": "netlify deploy --prod"
   },
   "devDependencies": {
     "@types/slug": "^5.0.3",
@@ -26,10 +28,5 @@
   },
   "engines": {
     "node": ">=16"
-  },
-  "workspaces": [
-    "solid-start",
-    "solid-start-static"
-  ],
-  "packageManager": "yarn@3.2.0"
+  }
 }
