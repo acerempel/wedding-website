@@ -154,14 +154,14 @@ export default function Form() {
       return <form name="rsvp" method="post" action="/" class="space-y-6" onsubmit={submit}>
         <input type="hidden" name="form-name" value="rsvp" />
         <Labeled label="Addressee">
-          <input type="text" readonly={true} name="addressee" value={state.invitation.addressee} />
+          <input type="text" readonly={true} name="addressee" value={state.invitation.addressee} class="mr-4" />
         </Labeled>
         {
           state.invitation.guests.length === 1
           ? <Single guest={state.invitation.guests[0]} />
           : <Multiple guests={state.invitation.guests} />
         }
-        <Labeled label="Message (optional)">
+        <Labeled class="mr-4" label="Message (optional)">
           <textarea name="message"></textarea>
         </Labeled>
         <Show when={state.errorMessage}>
@@ -176,7 +176,7 @@ export default function Form() {
 }
 
 function Labeled(props: { children: JSX.Element, label: string, class?: string }) {
-  return <label class={`flex flex-col space-y-1.5 ${props.class}`}>
+  return <label class={`flex flex-col space-y-2 ${props.class ?? ""}`}>
     <span class="label">{props.label}</span>
     {props.children}
   </label>
@@ -196,16 +196,16 @@ function Multiple(props: {guests: readonly string[]}) {
 }
 
 function Fields(props: { index: number, name: string }) {
-  return <div class="space-y-3">
-    <input type="hidden" name={`guest-${props.index}-name`} value={props.name}></input>
-    <fieldset>
-      <legend class="label mb-1.5">Do you plan on attending?</legend>
+  return <div class="flex flex-row flex-wrap">
+    <input hidden type="hidden" name={`guest-${props.index}-name`} value={props.name}></input>
+    <fieldset class="my-2 mr-4 flex flex-row flex-wrap">
+      <legend class="label mb-2">Do you plan on attending?</legend>
       <div class="space-x-3">
         <label><input type="radio" required={true} name={`guest-${props.index}-attending`} value="yes"/> Yes</label>
         <label><input type="radio" required={true} name={`guest-${props.index}-attending`} value="no"/> No</label>
       </div>
     </fieldset>
-    <Labeled label="Do you have any dietary restrictions?">
+    <Labeled class="my-2 mr-4 grow w-[300px]" label="Do you have any dietary restrictions?">
       <input type="text" name={`guest-${props.index}-dietary-restrictions`} />
     </Labeled>
   </div>
