@@ -4,6 +4,7 @@ import addressees from "./addresses.json"
 
 const enum Tag {
   Initial,
+  MultipleMatches,
   GotInvitation,
   Submitted,
 }
@@ -11,6 +12,12 @@ const enum Tag {
 interface InitialState {
   tag: Tag.Initial
   input: string
+  errorMessage?: string
+}
+
+interface MultipleMatchesState {
+  tag: Tag.MultipleMatches
+  matchingInvitations: Invitation[]
   errorMessage?: string
 }
 
@@ -24,7 +31,7 @@ interface SubmittedState {
   tag: Tag.Submitted
 }
 
-type State = InitialState | GotInvitationState | SubmittedState
+type State = InitialState | MultipleMatchesState | GotInvitationState | SubmittedState
 
 interface Invitation {
   addressee: string
@@ -72,14 +79,24 @@ export default function Form() {
     }
     const words = new Set(splitIntoWords(state.input) || null)
     if (words.size > 0) {
-      const invitation = invitations.find((invite) => isSubsetOf(words, invite.names))
-      if (invitation) {
-        setState({ tag: Tag.GotInvitation, invitation, errorMessage: undefined })
+      const matching = invitations.filter((invite) => isSubsetOf(words, invite.names))
+      if (matching.length == 1) {
+        setState({ tag: Tag.GotInvitation, invitation: matching[0], errorMessage: undefined })
+      } else if (matching.length == 0) {
+        setState({ errorMessage: "No invitation found!" })
       } else {
-        setState({ errorMessage: "No invitation found!!!" })
+        setState({ tag: Tag.MultipleMatches, matchingInvitations: matching, errorMessage: undefined })
       }
     } else {
       setState({ errorMessage: "You must type some words in the input field!" })
+    }
+  }
+
+  function inviteDisplay(invite: Invitation): string {
+    if (invite.guests.length <= 1) {
+      return invite.addressee
+    } else {
+      return invite.addressee.concat(" (", ...invite.guests.join(", "), ")")
     }
   }
 
@@ -102,7 +119,7 @@ export default function Form() {
   }
 
   return createMemo(() => {
-    if (state.tag === Tag.Initial) {
+    if (state.tag === Tag.Initial || state.tag === Tag.MultipleMatches) {
       return <form onsubmit={findInvitation}>
         <div class="flex flex-row">
           <Labeled
@@ -115,6 +132,22 @@ export default function Form() {
         </div>
         <Show when={state.errorMessage != null}>
           <p>{state.errorMessage}</p>
+        </Show>
+        <Show when={state.tag === Tag.MultipleMatches}>
+          <p>
+            There are multiple invitations that match what you typed. Which one is yours?
+          </p>
+          <ul class="w-max">
+            {(state as MultipleMatchesState).matchingInvitations.map((invite) => (
+              <li class="bg-teal-50 hover:bg-teal-100 first:rounded-t-lg last:rounded-b-lg border-t border-l border-r last:border-b border-teal">
+                <button
+                  type="button"
+                  class="text-left w-full py-3 px-4 interactive"
+                  onclick={() => setState({tag: Tag.GotInvitation, invitation: invite, errorMessage: undefined})}
+                >{inviteDisplay(invite)}</button>
+              </li>
+            ))}
+          </ul>
         </Show>
       </form>
     } else if (state.tag === Tag.GotInvitation) {
