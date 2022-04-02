@@ -74,7 +74,7 @@ export default function Form() {
     if (words.size > 0) {
       const invitation = invitations.find((invite) => isSubsetOf(words, invite.names))
       if (invitation) {
-        setState({ tag: Tag.GotInvitation, invitation })
+        setState({ tag: Tag.GotInvitation, invitation, errorMessage: undefined })
       } else {
         setState({ errorMessage: "No invitation found!!!" })
       }
@@ -93,7 +93,7 @@ export default function Form() {
       body: new URLSearchParams(data as any).toString(),
     }).then((response) => {
       if (response.ok) {
-        setState({ tag: Tag.Submitted })
+        setState({ tag: Tag.Submitted, errorMessage: undefined })
       } else {
         setState({ errorMessage: `There was a problem with submitting the form: ${response.statusText} (${response.status})` })
       }
@@ -109,7 +109,7 @@ export default function Form() {
             label="Enter the names of your guests or the names to which your invitation was addressed."
             class="w-min grow mr-4"
           >
-            <input type="text" oninput={(event) => setState({ input: event.currentTarget.value })}/>
+            <input type="text" oninput={(event) => setState({ input: event.currentTarget.value, errorMessage: undefined })}/>
           </Labeled>
           <button type="submit" class="w-max self-end button">Find invitation</button>
         </div>
