@@ -129,7 +129,7 @@ export default function Form() {
           >
             <input type="text" value={state.input} oninput={(event) => setState({ input: event.currentTarget.value, errorMessage: undefined })}/>
           </Labeled>
-          <button type="submit" class="w-max self-end button">Find invitation</button>
+          <button type="submit" class="w-max self-end button button-teal">Find invitation</button>
         </div>
         <Show when={state.errorMessage != null}>
           <ScrollIntoView alignBlock="end">
@@ -182,7 +182,7 @@ export default function Form() {
           <Show when={state.errorMessage}>
             <p>{state.errorMessage}</p>
           </Show>
-          <button type="submit" class="button">Submit</button>
+          <button type="submit" class="button button-teal">Submit</button>
         </form>
       </ScrollIntoView>
     } else if (state.tag === Tag.Submitted) {

@@ -153,7 +153,7 @@ export function TOC() {
   }
 
   return (
-    <ul class="space-y-4">
+    <ul class="space-y-4 mx-6 mb-4 mt-2 sm:m-0">
         {state.sections.map((section, index) => (
           <li>
             <a
