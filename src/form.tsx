@@ -140,7 +140,7 @@ export default function Form() {
           <p>
             There are multiple invitations that match what you typed. Which one is yours?
           </p>
-          <ul class="w-max">
+          <ul class="w-fit">
             {(state as MultipleMatchesState).matchingInvitations.map((invite) => (
               <li class="bg-teal-50 hover:bg-teal-100 first:rounded-t-lg last:rounded-b-lg border-t border-l border-r last:border-b border-teal">
                 <button
