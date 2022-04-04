@@ -18,7 +18,7 @@ export default () => {
   smallness.addEventListener('change', (event) => setNotSmall(event.matches))
   const [opened, setOpened] = createSignal(false)
   return (
-    <nav class="grid-left justify-self-end sm:justify-self-stretch sticky top-4 sm:top-0 sm:relative">
+    <nav class="grid-left justify-self-end sm:justify-self-stretch sticky top-4 sm:top-0 sm:relative z-10">
       <button
         type="button"
         class="block sm:hidden button drop-shadow-md"
