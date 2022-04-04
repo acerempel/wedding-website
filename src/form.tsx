@@ -132,7 +132,9 @@ export default function Form() {
           <button type="submit" class="w-max self-end button">Find invitation</button>
         </div>
         <Show when={state.errorMessage != null}>
-          <ErrorMessage message={state.errorMessage!} />
+          <ScrollIntoView alignBlock="end">
+            <p class="mt-6">{state.errorMessage}</p>
+          </ScrollIntoView>
         </Show>
         <Show when={state.tag === Tag.MultipleMatches}>
           <p>
@@ -152,46 +154,48 @@ export default function Form() {
         </Show>
       </form>
     } else if (state.tag === Tag.GotInvitation) {
-      return <form name="rsvp" method="post" action="/" class="space-y-6" onsubmit={submit}>
-        <input type="hidden" name="form-name" value="rsvp" />
-        <Labeled label="Addressee">
-          <div class="relative mr-4">
-            <input
-              type="text" readonly={true} name="addressee" value={state.invitation.addressee}
-              style="padding-right: calc(0.75rem * 2 + 5ch)"
-              class="w-full"
-            />
-            <button
-              type="button"
-              class="interactive absolute inset-y-1 right-1 px-2 py-1 rounded hover:bg-teal-100"
-              onclick={() => setState({tag: Tag.Initial, errorMessage: undefined, input: ""})}
-            >Clear</button>
-          </div>
-        </Labeled>
-        {
-          state.invitation.guests.length === 1
-          ? <Single guest={state.invitation.guests[0]} />
-          : <Multiple guests={state.invitation.guests} />
-        }
-        <Labeled class="mr-4" label="Message (optional)">
-          <textarea name="message"></textarea>
-        </Labeled>
-        <Show when={state.errorMessage}>
-          <p>{state.errorMessage}</p>
-        </Show>
-        <button type="submit" class="button">Submit</button>
-      </form>
+      return <ScrollIntoView alignBlock="start">
+        <form name="rsvp" method="post" action="/" class="space-y-6" onsubmit={submit}>
+          <input type="hidden" name="form-name" value="rsvp" />
+          <Labeled label="Addressee">
+            <div class="relative mr-4">
+              <input
+                type="text" readonly={true} name="addressee" value={state.invitation.addressee}
+                style="padding-right: calc(0.75rem * 2 + 5ch)"
+                class="w-full"
+              />
+              <button
+                type="button"
+                class="interactive absolute inset-y-1 right-1 px-2 py-1 rounded hover:bg-teal-100"
+                onclick={() => setState({tag: Tag.Initial, errorMessage: undefined, input: ""})}
+              >Clear</button>
+            </div>
+          </Labeled>
+          {
+            state.invitation.guests.length === 1
+            ? <Single guest={state.invitation.guests[0]} />
+            : <Multiple guests={state.invitation.guests} />
+          }
+          <Labeled class="mr-4" label="Message (optional)">
+            <textarea name="message"></textarea>
+          </Labeled>
+          <Show when={state.errorMessage}>
+            <p>{state.errorMessage}</p>
+          </Show>
+          <button type="submit" class="button">Submit</button>
+        </form>
+      </ScrollIntoView>
     } else if (state.tag === Tag.Submitted) {
       return <p>Thank you for RSVPing!</p>
     }
   })
 }
 
-function ErrorMessage(props: {message: string}) {
-  let elem: HTMLParagraphElement = undefined as unknown as HTMLParagraphElement;
-  onMount(() => elem.scrollIntoView({ block: "end", inline: "nearest" }))
+function ScrollIntoView(props: { alignBlock: "start" | "end" | "nearest", children: JSX.Element | JSX.Element[] }) {
+  let elem: HTMLDivElement = undefined as unknown as HTMLDivElement;
+  onMount(() => elem.scrollIntoView({ block: props.alignBlock, inline: "nearest" }))
   return (
-    <p ref={elem}>{props.message}</p>
+    <div ref={elem}>{props.children}</div>
   )
 }
 

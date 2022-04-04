@@ -13,7 +13,7 @@
 
     p {
       @apply my-6;
-      &:first-child { @apply mt-0; }
+      &:first-child[class = ""] { @apply mt-0; }
       .sr-only:first-child + & { @apply mt-0; }
     }
 
