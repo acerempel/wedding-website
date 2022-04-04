@@ -1,4 +1,4 @@
-import {createMemo, For, JSX, Show} from "solid-js"
+import {createMemo, For, JSX, onMount, Show} from "solid-js"
 import {createStore} from "solid-js/store"
 import addressees from "./addresses.json"
 
@@ -132,7 +132,7 @@ export default function Form() {
           <button type="submit" class="w-max self-end button">Find invitation</button>
         </div>
         <Show when={state.errorMessage != null}>
-          <p>{state.errorMessage}</p>
+          <ErrorMessage message={state.errorMessage!} />
         </Show>
         <Show when={state.tag === Tag.MultipleMatches}>
           <p>
@@ -185,6 +185,14 @@ export default function Form() {
       return <p>Thank you for RSVPing!</p>
     }
   })
+}
+
+function ErrorMessage(props: {message: string}) {
+  let elem: HTMLParagraphElement = undefined as unknown as HTMLParagraphElement;
+  onMount(() => elem.scrollIntoView({ block: "end", inline: "nearest" }))
+  return (
+    <p ref={elem}>{props.message}</p>
+  )
 }
 
 function Labeled(props: { children: JSX.Element, label: string, class?: string }) {
