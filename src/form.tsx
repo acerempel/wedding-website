@@ -127,7 +127,7 @@ export default function Form() {
             label="Enter the names of your guests or the names to which your invitation was addressed."
             class="w-min grow mr-4"
           >
-            <input type="text" value={state.input} oninput={(event) => setState({ input: event.currentTarget.value, errorMessage: undefined })}/>
+            <input type="search" value={state.input} oninput={(event) => setState({ input: event.currentTarget.value, errorMessage: undefined })}/>
           </Labeled>
           <button type="submit" class="w-max self-end button button-teal">Find invitation</button>
         </div>
