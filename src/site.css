@@ -22,8 +22,9 @@
     }
 
     form {
-      input[type = "text"], input[type = "email"], textarea {
-        @apply padded-md teal-border-rounded;
+      input[type = "text"], input[type = "email"], input[type = "search"], textarea {
+        /* outline-offset needed only for type=search */
+        @apply padded-md teal-border-rounded outline-offset-0;
       }
     }
 }
