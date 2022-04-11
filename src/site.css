@@ -1,14 +1,10 @@
 @layer base {
     a {
-      @apply underline interactive;
-      text-underline-offset: 0.25em;
-      text-decoration-thickness: 0.05em;
-      transition: 300ms ease text-decoration-thickness, 300ms ease font-weight;
+      @apply link;
     }
 
     a[aria-current = "true"] {
-        @apply font-bold;
-        text-decoration-thickness: 0.1em;
+        @apply font-bold underline-lg;
     }
 
     p {
@@ -62,6 +58,17 @@
       @apply text-teal-800;
     }
 
+    .underline-lg {
+      text-decoration-thickness: 0.1em;
+    }
+
+    .underline-md {
+      text-decoration-thickness: 0.075em;
+    }
+
+    .underline-sm {
+      text-decoration-thickness: 0.05em;
+    }
 }
 
 @layer components {
@@ -79,5 +86,11 @@
 
   .label {
     @apply text-sm text-maroon-800 italic;
+  }
+
+  .link {
+    @apply underline underline-sm interactive;
+    text-underline-offset: 0.25em;
+    transition: 300ms ease text-decoration-thickness, 300ms ease font-weight;
   }
 }

@@ -140,12 +140,12 @@ export default function Form() {
           <p>
             There are multiple invitations that match what you typed. Which one is yours?
           </p>
-          <ul class="w-fit">
+          <ul>
             {(state as MultipleMatchesState).matchingInvitations.map((invite) => (
-              <li class="bg-teal-50 hover:bg-teal-100 first:rounded-t-lg last:rounded-b-lg border-t border-l border-r last:border-b border-teal">
+              <li>
                 <button
                   type="button"
-                  class="text-left w-full py-3 px-4 interactive"
+                  class="inline-block text-left link underline-md font-medium py-2 px-3 hover:bg-teal-50 rounded"
                   onclick={() => setState({tag: Tag.GotInvitation, invitation: invite, errorMessage: undefined})}
                 >{inviteDisplay(invite)}</button>
               </li>
