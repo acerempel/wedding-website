@@ -13,6 +13,10 @@
       .sr-only:first-child + & { @apply mt-0; }
     }
 
+    h3 {
+      @apply mb-6 mt-8 font-medium text-xl;
+    }
+
     body {
       @apply leading-normal text-gray-900 bg-maroon-50;
     }

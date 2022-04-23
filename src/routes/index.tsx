@@ -44,6 +44,31 @@ export default function Home() {
           </p>
           <GoogleMap name="Old Town Hall" place_id="ChIJ-WJodKMFzkwRmAC3pmwc-Jc" />
         </Section>
+        <Section heading="Getting there">
+          <h3>By automobile</h3>
+          <p>Check back here at a later date for information on parking and other relevant details for motorists.</p>
+          <h3>By public transit</h3>
+          <p>
+            Nearby bus routes include the 5 and 55, which both come every half-hour and run along Main st, and the 14,
+            which comes every 15 minutes and runs along Elgin St (just on the other side of the canal from the festivities).
+          </p>
+          <p>
+            The Lees O-Train station is perhaps a 15-minute walk away; trains come every 5 minutes.
+          </p>
+          <h3>By bicycle</h3>
+          <p>
+            The nearby north-south thoroughfare of Main St has segregated bike lanes that will be useful for anyone coming
+            from points south of the festivities. There are also multi-use pathways along both sides of the Rideau canal.
+          </p>
+          <p>
+            Travellers from the east side of the Rideau River may cross at either the O-Train bridge
+            or the old train bridge and then make their way westward along Lees (which has painted bike lanes) towards the church.
+          </p>
+          <p>
+            For cyclists setting out from the Glebe or points west, the Flora Footbridge is the ideal place to cross the canal;
+            from there, one may simply head north on Echo Drive until one sees streamers.
+          </p>
+        </Section>
         <Section heading="Gifts">
           <p>
             Looking for gift ideas? 
