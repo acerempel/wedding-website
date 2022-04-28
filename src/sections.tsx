@@ -1,19 +1,16 @@
-import {createEffect, For, JSX, onMount} from "solid-js"
-import {createStore, DeepReadonly} from "solid-js/store"
+import {createSelector, createSignal, JSX, onMount} from "solid-js"
 import {isServer} from"solid-js/web"
 import slug from "slug"
 
 type SectionInfo = {
-    /** The <a> element. */
-    link: Element,
+    /** The slug. */
+    link: string,
     /** The section's ordering in the DOM relative to the other sections. */
     order: number,
 }
 
 /** Mapping from <section> elements to SectionInfo for that section */
-const sections = new Map<Element, SectionInfo>()
-/** Mapping from <a> elements in the toc to SectionInfo for section that the <a> links to */
-const sections_by_link = new Map<Element, SectionInfo>()
+const sections = new Map<string, SectionInfo>()
 
 /** How much of an element is visible? */
 const enum Visibility {
@@ -39,12 +36,7 @@ const visible = new Map<SectionInfo, Visibility>()
 let current: SectionInfo | null = null
 let manually_selected: Visibility | true | null = null
 
-function markCurrent(link: Element) {
-    link.setAttribute('aria-current', 'true')
-}
-function markNotCurrent(link: Element) {
-    link.setAttribute('aria-current', 'false')
-}
+const [currentLink, setCurrentLink] = createSignal<string>()
 
 function computeCurrentSection() {
     if (manually_selected) {
@@ -70,10 +62,9 @@ function computeCurrentSection() {
     // Sort by DOM order, earliest first
     visible_now.sort(([a, _v1], [b, _v2]) => b.order > a.order ? -1 : (b.order < a.order ? 1 : 0))
     // console.log("Visible:", visible_now.map(sec => (sec.link as HTMLAnchorElement).href))
-    current && markNotCurrent(current.link)
     // The visible section that is first in DOM order is the current section
     current = visible_now[0] && visible_now[0][0]
-    current && markCurrent(current.link)
+    setCurrentLink(current.link)
 }
 
 function makeObserver() {
@@ -81,7 +72,7 @@ function makeObserver() {
     function(entries) {
       // Update the set of visible sections
       for (const entry of entries) {
-        const section = sections.get(entry.target)!
+        const section = sections.get(entry.target.id)!
         if (entry.intersectionRatio === 1) {
             visible.set(section, Visibility.Whole)
         } else if (entry.isIntersecting) {
@@ -103,64 +94,65 @@ function makeObserver() {
 
 const sectionObserver = isServer ? undefined : makeObserver()
 
+const sections_list: Section[] = []
+
 interface Section {
   readonly slug: string
   readonly heading: string
-  readonly element: DeepReadonly<HTMLElement>
+  readonly element: () => HTMLElement
 }
 
-const [state, updateState] = createStore<{ sections: Section[] }>({ sections: [] })
+let next_ix = 0
 
 export function Section(props: {heading: string, children: JSX.Element | JSX.Element[], invisibleHeading?: boolean}) {
   // Can't observe it right away because this function is called (by way of
   // the `ref` attribute) before the element is added to the DOM.
-  let element = undefined as unknown as HTMLElement;
   const its_slug = slug(props.heading)
+    const { invisibleHeading, heading } = props
+    const element = () => <section id={its_slug} ref={(el) => sectionObserver?.observe(el)} class="pt-8 first:pt-0">
+        <h2
+        class={"mb-2 text-2xl font-medium" + (invisibleHeading ? ' sr-only' : '')}
+        >{heading}</h2>
+        {props.children}
+    </section> as HTMLElement
 
-  onMount(() => {
-    sectionObserver?.observe(element)
     const section: Section = {
       heading: props.heading,
       slug: its_slug,
-      element: element as unknown as DeepReadonly<HTMLElement>,
+      element,
     }
-    updateState('sections', sections => [...sections, section])
-  })
+    if (! sections.get(its_slug)) sections_list.push(section)
 
-  return (
-    <section ref={element} id={its_slug} class="pt-8 first:pt-0">
-      <h2
-        class={"mb-2 text-2xl font-medium" + (props.invisibleHeading ? ' sr-only' : '')}
-      >{props.heading}</h2>
-      {props.children}
-    </section>
-  )
+    sections.set(its_slug, {
+        order: next_ix,
+        link: its_slug,
+  })
+  next_ix = next_ix + 1
 }
 
-export function TOC() {
-  function registerLink(link: HTMLAnchorElement, section: Section, index: number) {
-    const info = { order: index, link, updated: 0 }
-    sections.set(section.element as unknown as Element, info)
-    sections_by_link.set(link, info)
-  }
+export function Sections() {
+    return sections_list.map((sec) => sec.element)
+}
 
+export const TOC = () => {
   const linkClicked: JSX.EventHandler<HTMLAnchorElement, MouseEvent> = (event) => {
     const link = event.currentTarget
-    current && markNotCurrent(current.link)
-    current = sections_by_link.get(link) || null
+    const slug = new URL(link.href).hash.slice(1)
     manually_selected = true
-    markCurrent(link)
+    setCurrentLink(slug)
   }
+
+    const isCurrent = createSelector(currentLink)
 
   return (
     <ul class="space-y-4 mx-6 mb-4 mt-2 sm:m-0">
-        {state.sections.map((section, index) => (
+        {/*@once*/ sections_list.map((section) => (
           <li>
             <a
-            ref={link => registerLink(link, section, index)}
-            href={`#${section.slug}`}
-            onclick={linkClicked}
-            rel="external"
+                aria-current={isCurrent(section.slug)}
+                href={`#${section.slug}`}
+                onclick={linkClicked}
+                rel="external"
             >{section.heading}</a>
           </li>
         ))}
