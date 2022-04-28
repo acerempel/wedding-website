@@ -1,5 +1,4 @@
-import {createMemo, For, JSX, onMount, Show} from "solid-js"
-import {createStore} from "solid-js/store"
+import {batch, createMemo, createSignal, For, JSX, onMount, Show} from "solid-js"
 import addressees from "./addresses.json"
 
 const enum Tag {
@@ -8,31 +7,6 @@ const enum Tag {
   GotInvitation,
   Submitted,
 }
-
-interface InitialState {
-  tag: Tag.Initial
-  input: string
-  errorMessage?: string
-}
-
-interface MultipleMatchesState {
-  tag: Tag.MultipleMatches
-  input: string
-  matchingInvitations: Invitation[]
-  errorMessage?: string
-}
-
-interface GotInvitationState {
-  tag: Tag.GotInvitation
-  invitation: Invitation
-  errorMessage?: string
-}
-
-interface SubmittedState {
-  tag: Tag.Submitted
-}
-
-type State = InitialState | MultipleMatchesState | GotInvitationState | SubmittedState
 
 interface Invitation {
   addressee: string
@@ -71,25 +45,41 @@ function createInvitations(): Invitation[] {
 
 export default function Form() {
   const invitations = createInvitations()
-  const [state, setState] = createStore({ tag: Tag.Initial, input: "" } as State)
+  const [stateTag, setStateTag] = createSignal(Tag.Initial)
+  const [errorMsg, setErrorMsg] = createSignal<string>()
+  const state = {
+    get tag() {return stateTag()},
+    get errorMessage() {return errorMsg()},
+  }
+  let invitation: Invitation
+  let matchingInvitations: Invitation[]
 
-  function findInvitation(event: SubmitEvent) {
+  const findInvitation: JSX.EventHandler<HTMLFormElement, SubmitEvent> = (event) => {
     event.preventDefault()
     if (state.tag !== Tag.Initial && state.tag !== Tag.MultipleMatches) {
       throw new Error(`internal error!! ${state.tag} Please alert alan.rempel@gmail.com!`)
     }
-    const words = new Set(splitIntoWords(state.input) || null)
+    const input = (event.currentTarget.elements.namedItem('query') as HTMLInputElement).value
+    const words = new Set(splitIntoWords(input) || null)
     if (words.size > 0) {
       const matching = invitations.filter((invite) => isSubsetOf(words, invite.names))
       if (matching.length == 1) {
-        setState({ tag: Tag.GotInvitation, invitation: matching[0], errorMessage: undefined })
+        invitation = matching[0]
+        batch(() => {
+          setStateTag(Tag.GotInvitation)
+          setErrorMsg(undefined)
+        })
       } else if (matching.length == 0) {
-        setState({ errorMessage: "No invitation found!" })
+        setErrorMsg("No invitation found!")
       } else {
-        setState({ tag: Tag.MultipleMatches, matchingInvitations: matching, errorMessage: undefined })
+        matchingInvitations = matching
+        batch(() => {
+          setStateTag(Tag.MultipleMatches)
+          setErrorMsg(undefined)
+        })
       }
     } else {
-      setState({ errorMessage: "You must type some words in the input field!" })
+      setErrorMsg("You must type some words in the input field!")
     }
   }
 
@@ -111,12 +101,15 @@ export default function Form() {
       body: new URLSearchParams(data as any).toString(),
     }).then((response) => {
       if (response.ok) {
-        setState({ tag: Tag.Submitted, errorMessage: undefined })
+        batch(() => {
+          setStateTag(Tag.Submitted)
+          setErrorMsg(undefined)
+        })
       } else {
-        setState({ errorMessage: `There was a problem with submitting the form: ${response.statusText} (${response.status})` })
+        setErrorMsg(`There was a problem with submitting the form: ${response.statusText} (${response.status})`)
       }
     })
-      .catch(() => setState({ errorMessage: "Submission failed! Try again." }))
+      .catch(() => setErrorMsg("Submission failed! Try again."))
   }
 
   return createMemo(() => {
@@ -127,7 +120,7 @@ export default function Form() {
             label="Enter the names of your guests or the names to which your invitation was addressed."
             class="w-min grow mr-4"
           >
-            <input type="search" value={state.input} oninput={(event) => setState({ input: event.currentTarget.value, errorMessage: undefined })}/>
+            <input type="search" name="query" />
           </Labeled>
           <button type="submit" class="w-max self-end button button-teal">Find invitation</button>
         </div>
@@ -142,12 +135,12 @@ export default function Form() {
           </p>
           <ScrollIntoView alignBlock="end">
             <ul>
-            {(state as MultipleMatchesState).matchingInvitations.map((invite) => (
+            {matchingInvitations.map((invite) => (
               <li>
                 <button
                   type="button"
                   class="inline-block text-left link underline-md font-medium py-2 px-3 hover:bg-teal-50 rounded"
-                  onclick={() => setState({tag: Tag.GotInvitation, invitation: invite, errorMessage: undefined})}
+                  onclick={() => { invitation = invite; setStateTag(Tag.GotInvitation) }}
                 >{inviteDisplay(invite)}</button>
               </li>
             ))}
@@ -162,21 +155,21 @@ export default function Form() {
           <Labeled label="Addressee">
             <div class="relative mr-4">
               <input
-                type="text" readonly={true} name="addressee" value={state.invitation.addressee}
+                type="text" readonly={true} name="addressee" value={invitation.addressee}
                 style="padding-right: calc(0.75rem * 2 + 5ch)"
                 class="w-full"
               />
               <button
                 type="button"
                 class="interactive absolute inset-y-1 right-1 px-2 py-1 rounded hover:bg-teal-100"
-                onclick={() => setState({tag: Tag.Initial, errorMessage: undefined, input: ""})}
+                onclick={() => batch(() => { setErrorMsg(undefined); setStateTag(Tag.Initial) })}
               >Clear</button>
             </div>
           </Labeled>
           {
-            state.invitation.guests.length === 1
-            ? <Single guest={state.invitation.guests[0]} />
-            : <Multiple guests={state.invitation.guests} />
+            invitation.guests.length === 1
+            ? <Single guest={/*@once*/ invitation.guests[0]} />
+            : <Multiple guests={/*@once*/ invitation.guests} />
           }
           <Labeled class="mr-4" label="Message (optional)">
             <textarea name="message"></textarea>
