@@ -1,4 +1,4 @@
-import {batch, createMemo, createSignal, For, JSX, onMount, Show} from "solid-js"
+import {batch, createSignal, For, JSX, Match, onMount, Show, Switch} from "solid-js"
 import addressees from "./addresses.json"
 
 const enum Tag {
@@ -112,9 +112,9 @@ export default function Form() {
       .catch(() => setErrorMsg("Submission failed! Try again."))
   }
 
-  return createMemo(() => {
-    if (state.tag === Tag.Initial || state.tag === Tag.MultipleMatches) {
-      return <form onsubmit={findInvitation}>
+  return <Switch>
+    <Match when={state.tag === Tag.Initial || state.tag === Tag.MultipleMatches}>
+      <form onsubmit={findInvitation}>
         <div class="flex flex-row">
           <Labeled
             label="Enter the names of your guests or the names to which your invitation was addressed."
@@ -135,7 +135,7 @@ export default function Form() {
           </p>
           <ScrollIntoView alignBlock="end">
             <ul>
-            {matchingInvitations.map((invite) => (
+            {matchingInvitations!.map((invite) => (
               <li>
                 <button
                   type="button"
@@ -148,14 +148,15 @@ export default function Form() {
           </ScrollIntoView>
         </Show>
       </form>
-    } else if (state.tag === Tag.GotInvitation) {
-      return <ScrollIntoView alignBlock="start">
+    </Match>
+    <Match when={state.tag === Tag.GotInvitation}>
+      <ScrollIntoView alignBlock="start">
         <form name="rsvp" method="post" action="/" class="space-y-6" onsubmit={submit}>
           <input type="hidden" name="form-name" value="rsvp" />
           <Labeled label="Addressee">
             <div class="relative mr-4">
               <input
-                type="text" readonly={true} name="addressee" value={invitation.addressee}
+                type="text" readonly={true} name="addressee" value={invitation!.addressee}
                 style="padding-right: calc(0.75rem * 2 + 5ch)"
                 class="w-full"
               />
@@ -167,9 +168,9 @@ export default function Form() {
             </div>
           </Labeled>
           {
-            invitation.guests.length === 1
-            ? <Single guest={/*@once*/ invitation.guests[0]} />
-            : <Multiple guests={/*@once*/ invitation.guests} />
+            invitation!.guests.length === 1
+            ? <Single guest={/*@once*/ invitation!.guests[0]} />
+            : <Multiple guests={/*@once*/ invitation!.guests} />
           }
           <Labeled class="mr-4" label="Message (optional)">
             <textarea name="message"></textarea>
@@ -180,10 +181,11 @@ export default function Form() {
           <button type="submit" class="button button-teal">Submit</button>
         </form>
       </ScrollIntoView>
-    } else if (state.tag === Tag.Submitted) {
-      return <p>Thank you for RSVPing!</p>
-    }
-  })
+    </Match>
+    <Match when={state.tag === Tag.Submitted}>
+      <p>Thank you for RSVPing!</p>
+    </Match>
+</Switch>
 }
 
 function ScrollIntoView(props: { alignBlock: "start" | "end" | "nearest", children: JSX.Element | JSX.Element[] }) {
