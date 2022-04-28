@@ -1,8 +1,8 @@
-import RSVPForm from '../form'
 import ServerForm from '~/server-form'
 import Nav from '../nav'
 import { Section, Sections } from "~/sections";
 import {GoogleMap} from "~/map";
+import { createSignal, lazy, Show } from 'solid-js';
 
 Section({
     heading: "Welcome",
@@ -48,6 +48,10 @@ Section({
         </> }
 })
 
+const RSVPForm = lazy(() => import("~/form"))
+
+const [formVisible, setFormVisible] = createSignal(false)
+
 Section({
     heading: "RSVP",
     get children() { return <>
@@ -57,8 +61,10 @@ Section({
             in that case, be sure to mention any dietary restrictions that apply to anyone in your party.
           </p>
           <ServerForm />
-          <RSVPForm />
-        </> }
+        <Show when={formVisible()}>
+          <RSVPForm /></Show>
+        </> },
+    onVisible: () => setFormVisible(true),
 })
 
 export default function Home() {

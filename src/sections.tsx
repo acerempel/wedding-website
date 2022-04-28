@@ -7,6 +7,7 @@ type SectionInfo = {
     link: string,
     /** The section's ordering in the DOM relative to the other sections. */
     order: number,
+    onVisible?: (el: Element) => void,
 }
 
 /** Mapping from <section> elements to SectionInfo for that section */
@@ -77,6 +78,7 @@ function makeObserver() {
             visible.set(section, Visibility.Whole)
         } else if (entry.isIntersecting) {
             visible.set(section, Visibility.Part)
+            section.onVisible && section.onVisible(entry.target)
         } else {
             visible.delete(section)
         }
@@ -84,7 +86,6 @@ function makeObserver() {
       computeCurrentSection()
     },
     {
-        rootMargin: "0px 24px 0px 0px",
         // Notify us when an element changes from invisible to visible and when
         // it changes from wholly to partially visible, or vice versa.
         threshold: [0, 1],
@@ -104,7 +105,11 @@ interface Section {
 
 let next_ix = 0
 
-export function Section(props: {heading: string, children: JSX.Element | JSX.Element[], invisibleHeading?: boolean}) {
+export function Section(props: {
+    heading: string, children: JSX.Element | JSX.Element[],
+    invisibleHeading?: boolean,
+    onVisible?: (el: Element) => void,
+}) {
   // Can't observe it right away because this function is called (by way of
   // the `ref` attribute) before the element is added to the DOM.
   const its_slug = slug(props.heading)
@@ -126,6 +131,7 @@ export function Section(props: {heading: string, children: JSX.Element | JSX.Ele
     sections.set(its_slug, {
         order: next_ix,
         link: its_slug,
+        onVisible: props.onVisible,
   })
   next_ix = next_ix + 1
 }
