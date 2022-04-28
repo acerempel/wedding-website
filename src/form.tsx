@@ -140,7 +140,8 @@ export default function Form() {
           <p>
             There are multiple invitations that match what you typed. Which one is yours?
           </p>
-          <ul>
+          <ScrollIntoView alignBlock="end">
+            <ul>
             {(state as MultipleMatchesState).matchingInvitations.map((invite) => (
               <li>
                 <button
@@ -150,7 +151,8 @@ export default function Form() {
                 >{inviteDisplay(invite)}</button>
               </li>
             ))}
-          </ul>
+            </ul>
+          </ScrollIntoView>
         </Show>
       </form>
     } else if (state.tag === Tag.GotInvitation) {
