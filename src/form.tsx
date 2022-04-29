@@ -47,17 +47,14 @@ export default function Form() {
   const invitations = createInvitations()
   const [stateTag, setStateTag] = createSignal(Tag.Initial)
   const [errorMsg, setErrorMsg] = createSignal<string>()
-  const state = {
-    get tag() {return stateTag()},
-    get errorMessage() {return errorMsg()},
-  }
   let invitation: Invitation
   let matchingInvitations: Invitation[]
 
   const findInvitation: JSX.EventHandler<HTMLFormElement, SubmitEvent> = (event) => {
     event.preventDefault()
-    if (state.tag !== Tag.Initial && state.tag !== Tag.MultipleMatches) {
-      throw new Error(`internal error!! ${state.tag} Please alert alan.rempel@gmail.com!`)
+    const currentTag = stateTag()
+    if (currentTag !== Tag.Initial && currentTag !== Tag.MultipleMatches) {
+      throw new Error(`internal error!! ${stateTag()} Please alert alan.rempel@gmail.com!`)
     }
     const input = (event.currentTarget.elements.namedItem('query') as HTMLInputElement).value
     const words = new Set(splitIntoWords(input) || null)
@@ -113,7 +110,7 @@ export default function Form() {
   }
 
   return <Switch>
-    <Match when={state.tag === Tag.Initial || state.tag === Tag.MultipleMatches}>
+    <Match when={stateTag() === Tag.Initial || stateTag() === Tag.MultipleMatches}>
       <form onsubmit={findInvitation}>
         <div class="flex flex-row">
           <Labeled
@@ -124,12 +121,12 @@ export default function Form() {
           </Labeled>
           <button type="submit" class="w-max self-end button button-teal">Find invitation</button>
         </div>
-        <Show when={state.errorMessage != null}>
+        <Show when={errorMsg() != null}>
           <ScrollIntoView alignBlock="end">
-            <p class="mt-6">{state.errorMessage}</p>
+            <p class="mt-6">{errorMsg()}</p>
           </ScrollIntoView>
         </Show>
-        <Show when={state.tag === Tag.MultipleMatches}>
+        <Show when={stateTag() === Tag.MultipleMatches}>
           <p>
             There are multiple invitations that match what you typed. Which one is yours?
           </p>
@@ -149,7 +146,7 @@ export default function Form() {
         </Show>
       </form>
     </Match>
-    <Match when={state.tag === Tag.GotInvitation}>
+    <Match when={stateTag() === Tag.GotInvitation}>
       <ScrollIntoView alignBlock="start">
         <form name="rsvp" method="post" action="/" class="space-y-6" onsubmit={submit}>
           <input type="hidden" name="form-name" value="rsvp" />
@@ -175,17 +172,17 @@ export default function Form() {
           <Labeled class="mr-4" label="Message (optional)">
             <textarea name="message"></textarea>
           </Labeled>
-          <Show when={state.errorMessage}>
-            <p>{state.errorMessage}</p>
+          <Show when={errorMsg()}>
+            <p>{errorMsg()}</p>
           </Show>
           <button type="submit" class="button button-teal">Submit</button>
         </form>
       </ScrollIntoView>
     </Match>
-    <Match when={state.tag === Tag.Submitted}>
+    <Match when={stateTag() === Tag.Submitted}>
       <p>Thank you for RSVPing!</p>
     </Match>
-</Switch>
+  </Switch>
 }
 
 function ScrollIntoView(props: { alignBlock?: "start" | "end" | "nearest", children: JSX.Element | JSX.Element[] }) {
