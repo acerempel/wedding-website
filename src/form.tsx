@@ -188,11 +188,9 @@ export default function Form() {
 </Switch>
 }
 
-function ScrollIntoView(props: { alignBlock: "start" | "end" | "nearest", children: JSX.Element | JSX.Element[] }) {
-  let elem: HTMLDivElement = undefined as unknown as HTMLDivElement;
-  onMount(() => elem.scrollIntoView({ block: props.alignBlock, inline: "nearest" }))
+function ScrollIntoView(props: { alignBlock?: "start" | "end" | "nearest", children: JSX.Element | JSX.Element[] }) {
   return (
-    <div ref={elem}>{props.children}</div>
+    <div ref={(elem) => elem.scrollIntoView({ block: props.alignBlock || "nearest", inline: "nearest" })}>{props.children}</div>
   )
 }
 
