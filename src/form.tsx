@@ -138,7 +138,7 @@ export default function Form() {
                   type="button"
                   class="inline-block text-left link underline-md font-medium py-2 px-3 hover:bg-teal-50 rounded"
                   onclick={() => { invitation = invite; setStateTag(Tag.GotInvitation) }}
-                >{inviteDisplay(invite)}</button>
+                >{/*@once*/ inviteDisplay(invite)}</button>
               </li>
             ))}
             </ul>

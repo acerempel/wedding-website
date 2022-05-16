@@ -19,7 +19,7 @@ Section({
     get children() {
       return <>
         <p>
-          The wedding ceremony will take place at the <strong>Church of the Ascension</strong> at 10:30 am.
+          The wedding ceremony will take place at the Church of the Ascension at <strong>10:30 am</strong>.
           The church is located at 253 Echo Drive, Ottawa, Ontario.
           See the map below, courtesy of Google, for more details and directions.
         </p>
@@ -33,8 +33,9 @@ Section({
     get children() {
       return <>
         <p>
-          The reception will take place at the <strong>Old Town Hall Community Centre</strong>, located at 61 Main St.
-          Come at 5:00pm for drinks, bites, and conversation <em>(note that this start time is half an hour earlier than what is on your invitations, which say 5:30pm)</em>.
+          The reception will take place at the Old Town Hall Community Centre, located at 61 Main St.
+          Come at <strong>4:30 pm</strong> for drinks, bites, and conversation. <em>(<strong>Note</strong> that this start time is one hour earlier
+          than what is on your invitations, which say 5:30pm, and half an hour earlier than what was previous stated on this webpage)</em>.
           Dinner will be served at 6:00pm.
         </p>
         <p>
