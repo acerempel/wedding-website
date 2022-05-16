@@ -1,4 +1,4 @@
-import {createSelector, createSignal, JSX, onMount} from "solid-js"
+import {createSelector, createSignal, JSX} from "solid-js"
 import {isServer} from"solid-js/web"
 import slug from "slug"
 
@@ -7,7 +7,6 @@ type SectionInfo = {
   link: string,
   /** The section's ordering in the DOM relative to the other sections. */
   order: number,
-  onVisible?: (el: Element) => void,
 }
 
 /** Mapping from <section> elements to SectionInfo for that section */
@@ -81,7 +80,6 @@ function makeObserver() {
           visible.set(section, Visibility.Whole)
         } else if (entry.isIntersecting) {
           visible.set(section, Visibility.Part)
-          section.onVisible && section.onVisible(entry.target)
         } else {
           visible.delete(section)
         }
@@ -136,7 +134,6 @@ export function Section(props: {
   sections.set(its_slug, {
     order: next_ix,
     link: its_slug,
-    onVisible: props.onVisible,
   })
   next_ix = next_ix + 1
 }
