@@ -1,4 +1,4 @@
-import {batch, createSignal, For, JSX, Match, onMount, Show, Switch} from "solid-js"
+import {batch, createSignal, For, JSX, Match, Show, Switch} from "solid-js"
 import addressees from "./addresses.json"
 
 const enum Tag {
