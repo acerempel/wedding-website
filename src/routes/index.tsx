@@ -24,6 +24,7 @@ Section({
           See the map below, courtesy of Google, for more details and directions.
         </p>
         <GoogleMap place_id="ChIJ_R9jrbwFzkwRYSDNlNd8XgE" name="Church of the Ascension" />
+        <p>Masks are required inside the church. N95-type masks are best; surgical masks are also good.</p>
       </>
     }
 })
@@ -40,12 +41,26 @@ Section({
         </p>
         <p>
           The Old Town Hall is situated very close to the church, about five minutes away on foot;
-          most guests who come by automobile will therefore need only one parking spot for both venues.
+          most guests who come by automobile can therefore leave their vehicles parked by the church and walk to the reception.
           Again, the map below may be helpful.
         </p>
         <GoogleMap name="Old Town Hall" place_id="ChIJ-WJodKMFzkwRmAC3pmwc-Jc" />
+        <p>Guests may wear masks inside the Old Town Hall, but we anticipate that, because everyone will take off their masks to eat and drink,
+        the benefits of mask-wearing will be minimal in this case.</p>
       </>
     }
+})
+
+Section({
+  heading: "Getting there",
+  get children() {
+    return <>
+      <h3>Parking</h3>
+      <p>The parking lot of Immaculata High School, immediately to the south of the church along Echo Drive, is available all day for
+      wedding guests. This parking lot is also accessible from Main St. There is very little parking by the Old Town Hall, but it is very close to the church on foot, so one can simply leave
+      one's car by the church.</p>
+    </>
+  }
 })
 
 Section({

@@ -1,0 +1,28 @@
+{
+  "name": "solid-start-node",
+  "version": "0.1.0-alpha.74",
+  "main": "./index.js",
+  "type": "module",
+  "solid": {
+    "type": "adapter"
+  },
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.2",
+    "compression": "^1.7.4",
+    "polka": "^1.0.0-next.13",
+    "rollup": "^2.53.3",
+    "sirv": "^1.0.12"
+  },
+  "devDependencies": {
+    "solid-start": "next",
+    "undici": "^4.12.2",
+    "vite": "^2.8.6"
+  },
+  "peerDependencies": {
+    "solid-start": "next",
+    "undici": "^4.12.2",
+    "vite": "*"
+  }
+}
