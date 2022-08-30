@@ -1,6 +1,9 @@
 import {createSelector, createSignal, JSX} from "solid-js"
 import {isServer} from"solid-js/web"
-import slug from "slug"
+
+function slug(s: string) {
+  return s.replaceAll(/[^a-zA-Z_-]/g, '')
+}
 
 type SectionInfo = {
   /** The slug. */

@@ -1,0 +1,77 @@
+{
+  "name": "solid-start",
+  "version": "0.1.0-alpha.81",
+  "description": "Create Solid apps with low configuration",
+  "author": "Ryan Carniato",
+  "license": "MIT",
+  "bin": {
+    "solid-start": "./bin.cjs",
+    "solid": "./bin.cjs"
+  },
+  "main": "./plugin.js",
+  "type": "module",
+  "types": "plugin.d.ts",
+  "files": [
+    "bin.cjs",
+    "plugin.js",
+    "routes.js",
+    "client-adapter.js",
+    "types.d.ts",
+    "server",
+    "form",
+    "session",
+    "entry-client",
+    "entry-server",
+    "plugin.d.ts",
+    "required-user-files.d.ts",
+    "root",
+    "runtime",
+    "error-boundary",
+    "api"
+  ],
+  "dependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/plugin-syntax-jsx": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "chokidar": "^3.5.3",
+    "compression": "^1.7.4",
+    "connect": "^3.7.0",
+    "cookie": "^0.4.1",
+    "cookie-signature": "^1.1.0",
+    "debug": "^4.3.4",
+    "dequal": "^2.0.2",
+    "es-module-lexer": "^0.9.3",
+    "esbuild": "^0.14.11",
+    "fast-glob": "^3.2.10",
+    "parse-multipart-data": "^1.2.1",
+    "picocolors": "^1.0.0",
+    "rollup": "^2.0.0",
+    "rollup-route-manifest": "^1.0.0",
+    "sade": "^1.8.0",
+    "sirv": "^1.0.19",
+    "undici": "^4.12.2",
+    "vite-plugin-inspect": "^0.3.13",
+    "vite-plugin-solid": "^2.2.6"
+  },
+  "devDependencies": {
+    "solid-app-router": "^0.3.1",
+    "solid-js": "^1.4.0",
+    "solid-meta": "^0.27.3",
+    "solid-start-cloudflare-pages": "next",
+    "solid-start-cloudflare-workers": "next",
+    "solid-start-deno": "next",
+    "solid-start-netlify": "next",
+    "solid-start-node": "next",
+    "vite": "^2.8.6"
+  },
+  "peerDependencies": {
+    "solid-app-router": "^0.3.1",
+    "solid-js": "^1.4.0",
+    "solid-meta": "^0.27.2",
+    "vite": "^2.8.6"
+  },
+  "optionalDependencies": {
+    "solid-start-node": "next"
+  }
+}
